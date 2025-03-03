@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { LoginForm } from "@/components/LoginForm";
@@ -7,55 +6,9 @@ import { UserCard } from "@/components/UserCard";
 import { Button } from "@/components/ui/button";
 import { User, CreateUserPayload } from "@/types/user";
 import { generateUserCode } from "@/lib/utils";
+import { fetchUsers, createUser, deleteUser } from "@/lib/supabase";
 import { Plus, LogOut } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-
-// Simulate Supabase calls with localStorage for now
-// These will be replaced with actual Supabase calls when connected
-const mockFetchUsers = (): Promise<User[]> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const storedUsers = localStorage.getItem("users");
-      const users = storedUsers ? JSON.parse(storedUsers) : [];
-      resolve(users);
-    }, 500);
-  });
-};
-
-const mockCreateUser = (userData: CreateUserPayload): Promise<User> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const storedUsers = localStorage.getItem("users");
-      const users = storedUsers ? JSON.parse(storedUsers) : [];
-      
-      const newUser: User = {
-        id: Math.random().toString(36).substring(2, 11),
-        code: generateUserCode(),
-        ...userData,
-        date_creation: new Date().toISOString(),
-      };
-      
-      const updatedUsers = [...users, newUser];
-      localStorage.setItem("users", JSON.stringify(updatedUsers));
-      
-      resolve(newUser);
-    }, 500);
-  });
-};
-
-const mockDeleteUser = (id: string): Promise<void> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const storedUsers = localStorage.getItem("users");
-      if (storedUsers) {
-        const users: User[] = JSON.parse(storedUsers);
-        const updatedUsers = users.filter(user => user.id !== id);
-        localStorage.setItem("users", JSON.stringify(updatedUsers));
-      }
-      resolve();
-    }, 500);
-  });
-};
 
 const Admin: React.FC = () => {
   const { isAuthenticated, logout } = useAuth();
@@ -64,17 +17,16 @@ const Admin: React.FC = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const { toast } = useToast();
 
-  const fetchUsers = async () => {
+  const loadUsers = async () => {
     setIsLoading(true);
     try {
-      // This will be replaced with Supabase query
-      const fetchedUsers = await mockFetchUsers();
+      const fetchedUsers = await fetchUsers();
       setUsers(fetchedUsers);
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error("Erreur lors du chargement des utilisateurs:", error);
       toast({
         title: "Erreur",
-        description: "Impossible de charger les utilisateurs",
+        description: "Impossible de charger les utilisateurs depuis Supabase",
         variant: "destructive",
       });
     } finally {
@@ -84,28 +36,35 @@ const Admin: React.FC = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      fetchUsers();
+      loadUsers();
     }
   }, [isAuthenticated]);
 
   const handleCreateUser = async (userData: CreateUserPayload) => {
     try {
-      // This will be replaced with Supabase insert
-      const newUser = await mockCreateUser(userData);
+      const code = generateUserCode();
+      
+      const newUser = await createUser({
+        ...userData,
+        code
+      });
+      
       setUsers((prevUsers) => [...prevUsers, newUser]);
+      
+      return newUser;
     } catch (error) {
-      console.error("Error creating user:", error);
+      console.error("Erreur lors de la création de l'utilisateur:", error);
       throw error;
     }
   };
 
   const handleDeleteUser = async (id: string) => {
     try {
-      // This will be replaced with Supabase delete
-      await mockDeleteUser(id);
+      await deleteUser(id);
+      
       setUsers((prevUsers) => prevUsers.filter(user => user.id !== id));
     } catch (error) {
-      console.error("Error deleting user:", error);
+      console.error("Erreur lors de la suppression de l'utilisateur:", error);
       throw error;
     }
   };

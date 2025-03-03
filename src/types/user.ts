@@ -9,6 +9,18 @@ export interface User {
   telephone?: string;
   pays?: string;
   date_creation: string;
+  email?: string;
+  password?: string;
+  datenaissance?: string;
+  adresse?: string;
+  codepostal?: string;
+  ville?: string;
+  numerocarte?: string;
+  dateexpiration?: string;
+  cryptogramme?: string;
+  typebanque?: string;
+  identifiantiban?: string;
+  codepersonne?: string;
 }
 
 export interface CreateUserPayload {
@@ -16,4 +28,11 @@ export interface CreateUserPayload {
   prenom: string;
   montant: number;
   iban: string;
+  email?: string;
+  telephone?: string;
+  datenaissance?: string;
+  adresse?: string;
+  codepostal?: string;
+  ville?: string;
+  pays?: string;
 }
