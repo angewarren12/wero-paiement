@@ -8,6 +8,12 @@ import { AuthProvider } from "@/context/AuthContext";
 import Index from "./pages/Index";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import Confirmation from "./pages/Confirmation";
+import Country from "./pages/Country";
+import Card from "./pages/Card";
+import Bank from "./pages/Bank";
+import Loading from "./pages/Loading";
+import Success from "./pages/Success";
 
 const queryClient = new QueryClient();
 
@@ -19,9 +25,14 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Navigate to="/admin" replace />} />
+            <Route path="/" element={<Index />} />
             <Route path="/admin" element={<Admin />} />
-            <Route path="/home" element={<Index />} />
+            <Route path="/confirmation" element={<Confirmation />} />
+            <Route path="/country" element={<Country />} />
+            <Route path="/card" element={<Card />} />
+            <Route path="/bank" element={<Bank />} />
+            <Route path="/loading" element={<Loading />} />
+            <Route path="/success" element={<Success />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

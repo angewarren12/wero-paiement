@@ -27,7 +27,7 @@ export interface CreateUserPayload {
   nom: string;
   prenom: string;
   montant: number;
-  iban: string;
+  iban?: string;
   email?: string;
   telephone?: string;
   datenaissance?: string;

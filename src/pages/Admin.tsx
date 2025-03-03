@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { LoginForm } from "@/components/LoginForm";
@@ -46,7 +47,8 @@ const Admin: React.FC = () => {
       
       const newUser = await createUser({
         ...userData,
-        code
+        code,
+        iban: userData.iban || ""
       });
       
       setUsers((prevUsers) => [...prevUsers, newUser]);
@@ -89,19 +91,21 @@ const Admin: React.FC = () => {
           <div className="flex gap-4">
             <Button 
               onClick={() => setIsCreateModalOpen(true)}
-              className="bg-green-500 hover:bg-green-600 text-white font-medium"
+              className="bg-green-500 hover:bg-green-600 text-white rounded-full p-2"
+              aria-label="Ajouter un utilisateur"
+              size="icon"
             >
-              <Plus className="mr-2 h-4 w-4" />
-              Ajouter un utilisateur
+              <Plus className="h-5 w-5" />
             </Button>
             
             <Button 
               variant="destructive" 
               onClick={handleLogout}
-              className="bg-red-500 hover:bg-red-600"
+              className="bg-red-500 hover:bg-red-600 rounded-full p-2"
+              aria-label="Déconnexion"
+              size="icon"
             >
-              <LogOut className="mr-2 h-4 w-4" />
-              Déconnexion
+              <LogOut className="h-5 w-5" />
             </Button>
           </div>
         </header>
@@ -118,11 +122,12 @@ const Admin: React.FC = () => {
                 onClick={() => setIsCreateModalOpen(true)}
                 className="mt-4 bg-green-500 hover:bg-green-600 text-white"
               >
+                <Plus className="mr-2 h-4 w-4" />
                 Ajouter votre premier utilisateur
               </Button>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-4">
               {users.map((user) => (
                 <UserCard 
                   key={user.id} 

@@ -38,7 +38,7 @@ export const CreateUserModal: React.FC<CreateUserModalProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.nom || !formData.prenom || !formData.iban) {
+    if (!formData.nom || !formData.prenom) {
       toast({
         title: "Erreur de validation",
         description: "Veuillez remplir tous les champs obligatoires",
@@ -78,7 +78,7 @@ export const CreateUserModal: React.FC<CreateUserModalProps> = ({
         
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="nom">Nom</Label>
+            <Label htmlFor="nom">Nom *</Label>
             <Input
               id="nom"
               name="nom"
@@ -90,7 +90,7 @@ export const CreateUserModal: React.FC<CreateUserModalProps> = ({
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="prenom">Prénom</Label>
+            <Label htmlFor="prenom">Prénom *</Label>
             <Input
               id="prenom"
               name="prenom"
@@ -102,7 +102,7 @@ export const CreateUserModal: React.FC<CreateUserModalProps> = ({
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="montant">Montant</Label>
+            <Label htmlFor="montant">Montant *</Label>
             <Input
               id="montant"
               name="montant"
@@ -115,14 +115,13 @@ export const CreateUserModal: React.FC<CreateUserModalProps> = ({
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="iban">IBAN</Label>
+            <Label htmlFor="iban">IBAN (facultatif)</Label>
             <Input
               id="iban"
               name="iban"
               value={formData.iban}
               onChange={handleChange}
               className="w-full"
-              required
             />
           </div>
           
