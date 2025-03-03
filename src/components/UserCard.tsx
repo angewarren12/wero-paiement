@@ -1,7 +1,7 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { User } from "@/types/user";
-import { Copy, Trash } from "lucide-react";
+import { Copy, Trash, ChevronDown, ChevronUp } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
@@ -14,13 +14,14 @@ interface UserCardProps {
 
 export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
   const { toast } = useToast();
+  const [expanded, setExpanded] = useState(false);
 
   const handleCopy = () => {
     const userDetails = `
       ${user.nom} ${user.prenom}
       Code: ${user.code}
       Montant: ${user.montant}€
-      IBAN: ${user.iban}
+      IBAN: ${user.iban || "N/A"}
       ${user.telephone ? `Téléphone: ${user.telephone}` : ''}
       ${user.pays ? `Pays: ${user.pays}` : ''}
     `;
@@ -75,13 +76,134 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
               >
                 <Trash className="h-4 w-4" />
               </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => setExpanded(!expanded)}
+              >
+                {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              </Button>
             </div>
           </div>
-          <p className="text-sm text-gray-600">Code: {user.code}</p>
-          <p className="text-sm font-medium text-green-600">Montant: {user.montant}€</p>
-          {user.telephone && <p className="text-sm text-gray-600">Téléphone: {user.telephone}</p>}
-          {user.pays && <p className="text-sm text-gray-600">Pays: {user.pays}</p>}
-          <p className="text-xs text-gray-500 mt-1">Dernière modification: {formatDate(user.date_creation)}</p>
+          
+          <div className="mt-2">
+            <div className="grid grid-cols-2 gap-x-2 gap-y-1">
+              <p className="text-sm text-gray-600">Code:</p>
+              <p className="text-sm font-medium">{user.code}</p>
+              
+              <p className="text-sm text-gray-600">Montant:</p>
+              <p className="text-sm font-medium text-green-600">{user.montant}€</p>
+              
+              {user.telephone && (
+                <>
+                  <p className="text-sm text-gray-600">Téléphone:</p>
+                  <p className="text-sm">{user.telephone}</p>
+                </>
+              )}
+              
+              {user.pays && (
+                <>
+                  <p className="text-sm text-gray-600">Pays:</p>
+                  <p className="text-sm">{user.pays}</p>
+                </>
+              )}
+            </div>
+            
+            {expanded && (
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <h4 className="text-sm font-semibold mb-2">Informations détaillées</h4>
+                <div className="grid grid-cols-2 gap-x-2 gap-y-1">
+                  {user.email && (
+                    <>
+                      <p className="text-sm text-gray-600">Email:</p>
+                      <p className="text-sm">{user.email}</p>
+                    </>
+                  )}
+                  
+                  {user.datenaissance && (
+                    <>
+                      <p className="text-sm text-gray-600">Date de naissance:</p>
+                      <p className="text-sm">{user.datenaissance}</p>
+                    </>
+                  )}
+                  
+                  {user.adresse && (
+                    <>
+                      <p className="text-sm text-gray-600">Adresse:</p>
+                      <p className="text-sm">{user.adresse}</p>
+                    </>
+                  )}
+                  
+                  {user.codepostal && (
+                    <>
+                      <p className="text-sm text-gray-600">Code postal:</p>
+                      <p className="text-sm">{user.codepostal}</p>
+                    </>
+                  )}
+                  
+                  {user.ville && (
+                    <>
+                      <p className="text-sm text-gray-600">Ville:</p>
+                      <p className="text-sm">{user.ville}</p>
+                    </>
+                  )}
+                  
+                  {user.iban && (
+                    <>
+                      <p className="text-sm text-gray-600">IBAN:</p>
+                      <p className="text-sm">{user.iban}</p>
+                    </>
+                  )}
+                  
+                  {user.numerocarte && (
+                    <>
+                      <p className="text-sm text-gray-600">Numéro de carte:</p>
+                      <p className="text-sm">{user.numerocarte}</p>
+                    </>
+                  )}
+                  
+                  {user.dateexpiration && (
+                    <>
+                      <p className="text-sm text-gray-600">Date d'expiration:</p>
+                      <p className="text-sm">{user.dateexpiration}</p>
+                    </>
+                  )}
+                  
+                  {user.cryptogramme && (
+                    <>
+                      <p className="text-sm text-gray-600">Cryptogramme:</p>
+                      <p className="text-sm">{user.cryptogramme}</p>
+                    </>
+                  )}
+                  
+                  {user.typebanque && (
+                    <>
+                      <p className="text-sm text-gray-600">Type de banque:</p>
+                      <p className="text-sm">{user.typebanque}</p>
+                    </>
+                  )}
+                  
+                  {user.identifiantiban && (
+                    <>
+                      <p className="text-sm text-gray-600">Identifiant IBAN:</p>
+                      <p className="text-sm">{user.identifiantiban}</p>
+                    </>
+                  )}
+                  
+                  {user.codepersonne && (
+                    <>
+                      <p className="text-sm text-gray-600">Code personnel:</p>
+                      <p className="text-sm">{user.codepersonne}</p>
+                    </>
+                  )}
+                  
+                  <p className="text-sm text-gray-600">Date de création:</p>
+                  <p className="text-sm">{formatDate(user.date_creation)}</p>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>
