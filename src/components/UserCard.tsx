@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { User } from "@/types/user";
 import { Copy, Trash, ChevronDown, ChevronUp, FileText } from "lucide-react";
@@ -61,12 +62,24 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
     const g = parseInt("f4", 16);  // 244
     const b = parseInt("8d", 16);  // 141
     
+    // Move the logo up by 3 pixels (from 25 to 22)
+    // Add shadow effect
+    doc.setFillColor(100, 100, 100, 0.5);
+    doc.ellipse(41, 23, 15, 15, "F");
+    
+    // Main circle with black contour
     doc.setFillColor(r, g, b);
-    doc.ellipse(40, 25, 15, 15, "F");
+    doc.ellipse(40, 22, 15, 15, "F");
+    
+    // Add black contour
+    doc.setDrawColor(0, 0, 0);
+    doc.setLineWidth(0.5);
+    doc.ellipse(40, 22, 15, 15, "S");
+    
     doc.setTextColor(0, 0, 0);
     doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
-    doc.text("WERO", 32, 28);
+    doc.text("WERO", 32, 25);
     
     doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
@@ -78,24 +91,25 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
     doc.setFontSize(11);
     doc.setFont("helvetica", "normal");
     
-    doc.text("Compte :", 30, 70);
+    // Reducing spacing between info sections
+    doc.text("Compte :", 30, 60);
     doc.setFont("helvetica", "bold");
-    doc.text(`${user.nom} ${user.prenom}`, 110, 70);
-    doc.text(`Wero By Bancontact`, 110, 77);
+    doc.text(`${user.nom} ${user.prenom}`, 110, 60);
+    doc.text(`Wero By Bancontact`, 110, 67);
     
     doc.setFont("helvetica", "normal");
-    doc.text("Montant :", 30, 100);
+    doc.text("Montant :", 30, 85);
     doc.setFont("helvetica", "normal");
-    doc.text("(Virement instantané en euros)", 110, 100);
+    doc.text("(Virement instantané en euros)", 110, 85);
     doc.setFont("helvetica", "bold");
-    doc.text(`€ ${user.montant.toFixed(2)} €`, 110, 107);
+    doc.text(`€ ${user.montant.toFixed(2)} €`, 110, 92);
     
     const today = new Date();
     const formattedDate = `${today.getDate().toString().padStart(2, '0')}/${(today.getMonth()+1).toString().padStart(2, '0')}/${today.getFullYear()}`;
     doc.setFont("helvetica", "normal");
-    doc.text("Date de l'opération :", 30, 130);
+    doc.text("Date de l'opération :", 30, 110);
     doc.setFont("helvetica", "bold");
-    doc.text(formattedDate, 110, 130);
+    doc.text(formattedDate, 110, 110);
     
     doc.setFontSize(7);
     doc.setFont("helvetica", "normal");
