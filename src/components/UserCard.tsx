@@ -121,8 +121,8 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
     
     doc.setFontSize(7);
     doc.setFont("helvetica", "normal");
-    doc.text("AXA Bank France sa fait partie du Groupe Crelan – Boulevard Sylvain Dupuis 251 - 1070 Anderlecht • TEL 03 286 66 00 •", 20, 270);
-    doc.text("www.wero-wallet.fr • BIC: AXABBE22 • IBAN BE67 7000 9909 9587 • N° BCE : TVA BE 0404 476 835 RPM frances • FSMA 036705 A", 20, 275);
+    doc.text("Bank France sa fait partie du Groupe Crelan – Boulevard Sylvain Dupuis 251 - 1070 Anderlecht • TEL 03 286 66 00 •", 20, 270);
+    doc.text("www.wero-wallet.fr • BIC: AXABBE22 • IBAN FR 7614 7070 0012 3445 6689 01138 • N° BCE : TVA BE 0404 476 835 RPM france • FSMA 036705 A", 20, 275);
     
     doc.save(`user_${user.code}_detail.pdf`);
     
