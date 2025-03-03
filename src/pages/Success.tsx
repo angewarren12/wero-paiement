@@ -46,12 +46,6 @@ const Success = () => {
             </div>
             
             <div className="border-t border-gray-200 pt-6">
-              <img 
-                src="/lovable-uploads/57a93a28-3e21-4341-8b68-bdaf857eb3be.png"
-                alt="Payment processors"
-                className="w-64 h-auto mx-auto mb-4"
-              />
-              
               <p className="text-xs text-red-500">
                 NB : Vos informations sont cryptées et stockées sur un serveur hautement sécurisé validé par le (RGPD), garantissant la protection et la confidentialité de vos données.
               </p>
