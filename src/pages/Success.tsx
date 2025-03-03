@@ -1,6 +1,7 @@
 
 import React from "react";
 import { Footer } from "@/components/Footer";
+import { Loader } from "lucide-react";
 
 const Success = () => {
   return (
@@ -15,11 +16,7 @@ const Success = () => {
             <h2 className="text-xl font-bold text-blue-500 mb-6">Virement en cours...</h2>
             
             <div className="flex justify-center mb-6">
-              <img 
-                src="/lovable-uploads/e91909b5-7739-4e69-a65f-9867adceb5d2.png"
-                alt="Loading animation"
-                className="w-20 h-auto"
-              />
+              <Loader className="w-16 h-16 text-blue-500 animate-spin" />
             </div>
             
             <p className="font-medium mb-8">
