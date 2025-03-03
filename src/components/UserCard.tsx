@@ -57,12 +57,16 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
   const generatePDF = () => {
     const doc = new jsPDF();
     
-    doc.setFillColor(230, 190, 0);
+    const r = parseInt("ff", 16);  // 255
+    const g = parseInt("f4", 16);  // 244
+    const b = parseInt("8d", 16);  // 141
+    
+    doc.setFillColor(r, g, b);
     doc.ellipse(40, 25, 15, 15, "F");
     doc.setTextColor(0, 0, 0);
-    doc.setFontSize(14);
+    doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
-    doc.text("WERO", 30, 28);
+    doc.text("WERO", 32, 28);
     
     doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
