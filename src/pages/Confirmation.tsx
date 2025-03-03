@@ -90,9 +90,9 @@ const Confirmation = () => {
             
             <div className="flex justify-center mb-6">
               <img 
-                src="/lovable-uploads/57a93a28-3e21-4341-8b68-bdaf857eb3be.png"
-                alt="Wero app"
-                className="w-32 h-auto"
+                src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=235,h=225,fit=crop/Aq2q239lEjf2a2Mj/home-phone-fr-min-m2WaWKO7LnSbwjn0.png"
+                alt="Wero Payment"
+                className="img-fluid"
               />
             </div>
             

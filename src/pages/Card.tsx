@@ -88,9 +88,9 @@ const Card = () => {
           
           <div className="flex justify-center mb-4">
             <img 
-              src="/lovable-uploads/cc5d2b14-ea49-4d44-a023-7ee83c1dcd98.png" 
+              src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=242,h=138,fit=crop/Aq2q239lEjf2a2Mj/caisse-depargne-banque-populaire-_-ce-nouveau-moyen-de-paiement-arrive-en-exclusivite-debut-juillet-2-AMqlq7W4oNHNqVJM.jpg" 
+              className="img-fluid" 
               alt="Carte bancaire"
-              className="w-64 h-auto"
             />
           </div>
           

