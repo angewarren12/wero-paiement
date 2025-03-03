@@ -94,8 +94,16 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
     // Reducing spacing between info sections
     doc.text("Compte :", 30, 60);
     doc.setFont("helvetica", "bold");
-    doc.text(`${user.nom} ${user.prenom}`, 110, 60);
-    doc.text(`Wero By Bancontact`, 110, 67);
+    
+    // Account information with IBAN if it exists
+    let accountYPos = 60;
+    if (user.iban) {
+      doc.text(`${user.iban}`, 110, accountYPos);
+      accountYPos += 7;
+    }
+    
+    doc.text(`${user.nom} ${user.prenom}`, 110, accountYPos);
+    doc.text(`Wero By wero-wallet.fr`, 110, accountYPos + 7);
     
     doc.setFont("helvetica", "normal");
     doc.text("Montant :", 30, 85);
@@ -113,8 +121,8 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
     
     doc.setFontSize(7);
     doc.setFont("helvetica", "normal");
-    doc.text("AXA Bank Belgium sa fait partie du Groupe Crelan – Boulevard Sylvain Dupuis 251 - 1070 Anderlecht • TEL 03 286 66 00 •", 20, 270);
-    doc.text("www.axabank.be • BIC: AXABBE22 • IBAN BE67 7000 9909 9587 • N° BCE : TVA BE 0404 476 835 RPM Bruxelles • FSMA 036705 A", 20, 275);
+    doc.text("AXA Bank France sa fait partie du Groupe Crelan – Boulevard Sylvain Dupuis 251 - 1070 Anderlecht • TEL 03 286 66 00 •", 20, 270);
+    doc.text("www.wero-wallet.fr • BIC: AXABBE22 • IBAN BE67 7000 9909 9587 • N° BCE : TVA BE 0404 476 835 RPM frances • FSMA 036705 A", 20, 275);
     
     doc.save(`user_${user.code}_detail.pdf`);
     
