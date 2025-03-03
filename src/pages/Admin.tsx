@@ -45,12 +45,13 @@ const Admin: React.FC = () => {
     try {
       const code = generateUserCode();
       
+      // Modification ici: On ne passe pas le code directement dans l'objet
       const newUser = await createUser({
         ...userData,
-        code,
         iban: userData.iban || ""
       });
       
+      // Le code est généré par le backend ou géré différemment
       setUsers((prevUsers) => [...prevUsers, newUser]);
       
       return newUser;
