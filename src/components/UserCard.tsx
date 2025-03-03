@@ -1,11 +1,12 @@
-
 import React, { useState } from "react";
 import { User } from "@/types/user";
-import { Copy, Trash, ChevronDown, ChevronUp } from "lucide-react";
+import { Copy, Trash, ChevronDown, ChevronUp, FileText } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 interface UserCardProps {
   user: User;
@@ -53,6 +54,58 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
     }
   };
 
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    
+    doc.setFillColor(255, 215, 0);
+    doc.ellipse(40, 25, 15, 15, "F");
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+    doc.text("wero", 32, 28);
+    
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text("Détail opération", 105, 30, { align: "center" });
+    
+    doc.setDrawColor(0);
+    doc.line(20, 40, 190, 40);
+
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
+    
+    doc.text("Compte :", 30, 70);
+    doc.setFont("helvetica", "bold");
+    doc.text(`${user.nom} ${user.prenom}`, 110, 70);
+    doc.text(`Wero By Bancontact`, 110, 77);
+    
+    doc.setFont("helvetica", "normal");
+    doc.text("Montant :", 30, 100);
+    doc.setFont("helvetica", "normal");
+    doc.text("(Virement instantané en euros)", 110, 100);
+    doc.setFont("helvetica", "bold");
+    doc.text(`€ ${user.montant.toFixed(2)} €`, 110, 107);
+    
+    const today = new Date();
+    const formattedDate = `${today.getDate().toString().padStart(2, '0')}/${(today.getMonth()+1).toString().padStart(2, '0')}/${today.getFullYear()}`;
+    doc.setFont("helvetica", "normal");
+    doc.text("Date de l'opération :", 30, 130);
+    doc.setFont("helvetica", "bold");
+    doc.text(formattedDate, 110, 130);
+    
+    doc.setFontSize(7);
+    doc.setFont("helvetica", "normal");
+    doc.text("AXA Bank Belgium sa fait partie du Groupe Crelan – Boulevard Sylvain Dupuis 251 - 1070 Anderlecht • TEL 03 286 66 00 •", 20, 270);
+    doc.text("www.axabank.be • BIC: AXABBE22 • IBAN BE67 7000 9909 9587 • N° BCE : TVA BE 0404 476 835 RPM Bruxelles • FSMA 036705 A", 20, 275);
+    
+    doc.save(`user_${user.code}_detail.pdf`);
+    
+    toast({
+      title: "PDF généré",
+      description: "Le PDF a été téléchargé avec succès",
+    });
+  };
+
   return (
     <Card className="mb-6 overflow-hidden border border-gray-200">
       <CardContent className="p-0">
@@ -75,6 +128,14 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
                 onClick={handleDelete}
               >
                 <Trash className="h-4 w-4" />
+              </Button>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="h-8 w-8 bg-green-500 hover:bg-green-600 text-white"
+                onClick={generatePDF}
+              >
+                <FileText className="h-4 w-4" />
               </Button>
               <Button
                 variant="outline"
