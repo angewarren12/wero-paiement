@@ -25,8 +25,14 @@ const Admin: React.FC = () => {
     setIsLoading(true);
     try {
       const fetchedUsers = await fetchUsers();
-      setUsers(fetchedUsers);
-      setFilteredUsers(fetchedUsers);
+      
+      // Sort users by creation date (newest first)
+      const sortedUsers = [...fetchedUsers].sort((a, b) => {
+        return new Date(b.date_creation).getTime() - new Date(a.date_creation).getTime();
+      });
+      
+      setUsers(sortedUsers);
+      setFilteredUsers(sortedUsers);
     } catch (error) {
       console.error("Erreur lors du chargement des utilisateurs:", error);
       toast({
@@ -73,9 +79,9 @@ const Admin: React.FC = () => {
         iban: userData.iban || ""
       });
       
-      // Le code est généré par le backend ou géré différemment
-      setUsers((prevUsers) => [...prevUsers, newUser]);
-      setFilteredUsers((prevUsers) => [...prevUsers, newUser]);
+      // Add the new user at the beginning of the array (newest first)
+      setUsers((prevUsers) => [newUser, ...prevUsers]);
+      setFilteredUsers((prevUsers) => [newUser, ...prevUsers]);
       
       return newUser;
     } catch (error) {
