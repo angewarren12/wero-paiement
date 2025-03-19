@@ -2,9 +2,9 @@
 import emailjs from 'emailjs-com';
 
 // Configuration EmailJS
-const SERVICE_ID = 'default_service'; // À remplacer par votre ID de service
-const TEMPLATE_ID = 'template_default'; // À remplacer par votre ID de template
-const USER_ID = 'YOUR_USER_ID'; // À remplacer par votre User ID
+const SERVICE_ID = 'default_service'; // Remplacez par l'ID de service obtenu sur emailjs.com
+const TEMPLATE_ID = 'template_default'; // Remplacez par l'ID de template obtenu sur emailjs.com
+const USER_ID = 'YOUR_USER_ID'; // Remplacez par votre User ID (ou Public Key) obtenu sur emailjs.com
 const ADMIN_EMAIL = 'Deux568@proton.me';
 
 interface EmailParams {
@@ -16,6 +16,12 @@ interface EmailParams {
 
 /**
  * Envoie un email de notification à l'administrateur
+ * 
+ * Pour configurer EmailJS:
+ * 1. Créez un compte sur emailjs.com
+ * 2. Ajoutez un service email (Gmail, Outlook, etc.)
+ * 3. Créez un template avec les variables: {{to_email}}, {{subject}}, {{message}}, {{user_code}}, {{user_name}}
+ * 4. Remplacez les constantes SERVICE_ID, TEMPLATE_ID et USER_ID ci-dessus par vos identifiants
  */
 export const sendAdminNotification = async (params: EmailParams): Promise<boolean> => {
   try {
