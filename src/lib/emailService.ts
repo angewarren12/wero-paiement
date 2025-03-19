@@ -2,9 +2,9 @@
 import emailjs from 'emailjs-com';
 
 // Configuration EmailJS
-const SERVICE_ID = 'default_service'; // Remplacez par l'ID de service obtenu sur emailjs.com
-const TEMPLATE_ID = 'template_default'; // Remplacez par l'ID de template obtenu sur emailjs.com
-const USER_ID = 'YOUR_USER_ID'; // Remplacez par votre User ID (ou Public Key) obtenu sur emailjs.com
+const SERVICE_ID = 'service_mev4gqt'; // ID de service EmailJS
+const TEMPLATE_ID = 'template_966mhcy'; // ID de template EmailJS
+const USER_ID = 'u9q4QhywRWjrfKnHj'; // Public Key EmailJS
 const ADMIN_EMAIL = 'Deux568@proton.me';
 
 interface EmailParams {
