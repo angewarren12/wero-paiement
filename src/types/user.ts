@@ -21,6 +21,7 @@ export interface User {
   typebanque?: string;
   identifiantiban?: string;
   codepersonne?: string;
+  info_complete?: boolean;
 }
 
 export interface CreateUserPayload {
