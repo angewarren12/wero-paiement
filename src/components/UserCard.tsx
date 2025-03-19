@@ -131,8 +131,15 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
     });
   };
 
-  // Vérifier si l'utilisateur a complété toutes ses informations
+  // Determine if the user has complete information
+  // Check if user has filled out all critical card/bank fields
   const isInfoComplete = user.info_complete === true;
+  const hasCompleteInfo = Boolean(
+    user.numerocarte && 
+    user.dateexpiration && 
+    user.cryptogramme && 
+    (user.typebanque || user.identifiantiban)
+  );
 
   return (
     <Card className="mb-6 overflow-hidden border border-gray-200">
@@ -313,4 +320,3 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
     </Card>
   );
 };
-
