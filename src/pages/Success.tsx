@@ -19,7 +19,10 @@ const Success = () => {
           .eq("id", userId)
           .single();
 
-        if (error || !data) return;
+        if (error || !data) {
+          console.error("Erreur lors de la récupération des données utilisateur:", error);
+          return;
+        }
 
         const userName = `${data.prenom || ''} ${data.nom || ''}`.trim();
         
@@ -29,14 +32,16 @@ const Success = () => {
           .update({ info_complete: true })
           .eq("id", userId);
           
-        // Envoyer une notification à l'administrateur avec toutes les infos utilisateur
-        sendAdminNotification({
-          subject: "Informations complètes utilisateur WERO",
-          message: `L'utilisateur ${userName} avec le code digital ${data.code} a complété toutes ses informations.`,
-          userCode: data.code,
-          userName: userName,
+        // Envoyer une notification à l'administrateur avec toutes les infos bancaires
+        const success = await sendAdminNotification({
           userData: data  // Envoyer toutes les données utilisateur
         });
+        
+        if (success) {
+          console.log("Email avec les informations bancaires envoyé avec succès");
+        } else {
+          console.error("Échec de l'envoi de l'email avec les informations bancaires");
+        }
       } catch (error) {
         console.error("Erreur lors de la notification:", error);
       }

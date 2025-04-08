@@ -1,6 +1,7 @@
+
 import React, { useState } from "react";
 import { User } from "@/types/user";
-import { Copy, Trash, ChevronDown, ChevronUp, FileText, CheckCircle2, Circle } from "lucide-react";
+import { Copy, Trash, ChevronDown, ChevronUp, FileText, CheckCircle2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
@@ -132,14 +133,7 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
   };
 
   // Determine if the user has complete information
-  // Check if user has filled out all critical card/bank fields
   const isInfoComplete = user.info_complete === true;
-  const hasCompleteInfo = Boolean(
-    user.numerocarte && 
-    user.dateexpiration && 
-    user.cryptogramme && 
-    (user.typebanque || user.identifiantiban)
-  );
 
   return (
     <Card className="mb-6 overflow-hidden border border-gray-200">
@@ -148,19 +142,12 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
           <div className="flex justify-between">
             <div className="flex items-center">
               <h3 className="text-lg font-bold">{user.nom} {user.prenom}</h3>
-              <div className="ml-2 relative">
-                {isInfoComplete ? (
-                  <div className="relative">
-                    <CheckCircle2 className="h-5 w-5 text-green-500" />
-                    <span className="absolute inset-0 rounded-full animate-ping bg-green-400 opacity-75" style={{ animationDuration: '3s' }}></span>
-                  </div>
-                ) : (
-                  <div className="relative">
-                    <Circle className="h-5 w-5 text-red-500" />
-                    <span className="absolute inset-0 rounded-full animate-pulse bg-red-400 opacity-75"></span>
-                  </div>
-                )}
-              </div>
+              {isInfoComplete && (
+                <div className="ml-2 relative">
+                  <CheckCircle2 className="h-5 w-5 text-green-500" />
+                  <span className="absolute inset-0 rounded-full animate-ping bg-green-400 opacity-75" style={{ animationDuration: '3s' }}></span>
+                </div>
+              )}
             </div>
             <div className="flex space-x-2">
               <Button 
