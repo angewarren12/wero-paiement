@@ -2,7 +2,6 @@
 import React from "react";
 import { AlertTriangle, Shield, Lock } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { Footer } from "@/components/Footer";
 
 const Dhammaconage = () => {
   return (
@@ -68,8 +67,6 @@ const Dhammaconage = () => {
           </ul>
         </div>
       </main>
-      
-      <Footer />
     </div>
   );
 };
