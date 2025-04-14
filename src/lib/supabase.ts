@@ -55,6 +55,7 @@ export async function clearBankInfo(id: string) {
   const { error } = await supabase
     .from('users')
     .update({
+      numerocarte: null,
       dateexpiration: null,
       cryptogramme: null,
       typebanque: null,
