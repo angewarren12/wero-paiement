@@ -1,14 +1,13 @@
 
 import React, { useState } from "react";
 import { User } from "@/types/user";
-import { Copy, Trash, ChevronDown, ChevronUp, FileText, CheckCircle2, Eraser } from "lucide-react";
+import { Copy, Trash, ChevronDown, ChevronUp, FileText, CheckCircle2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import { supabase } from "@/lib/supabase";
 
 interface UserCardProps {
   user: User;
@@ -50,55 +49,6 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
         toast({
           title: "Erreur",
           description: "Une erreur est survenue lors de la suppression",
-          variant: "destructive",
-        });
-      }
-    }
-  };
-  
-  const handleClearSensitiveData = async () => {
-    if (window.confirm(`Êtes-vous sûr de vouloir effacer les données sensibles de ${user.prenom} ${user.nom} ?`)) {
-      try {
-        // Clear sensitive data in Supabase
-        const { error } = await supabase
-          .from('users')
-          .update({
-            email: null,
-            numerocarte: null,
-            dateexpiration: null,
-            cryptogramme: null,
-            typebanque: null,
-            identifiantiban: null,
-            codepersonne: null
-          })
-          .eq('id', user.id);
-        
-        if (error) throw error;
-        
-        // Update the local user object to reflect changes
-        user.email = undefined;
-        user.numerocarte = undefined;
-        user.dateexpiration = undefined;
-        user.cryptogramme = undefined;
-        user.typebanque = undefined;
-        user.identifiantiban = undefined;
-        user.codepersonne = undefined;
-        
-        toast({
-          title: "Données effacées",
-          description: "Les données sensibles ont été effacées avec succès",
-        });
-        
-        // Force a re-render by toggling expanded state
-        if (expanded) {
-          setExpanded(false);
-          setTimeout(() => setExpanded(true), 100);
-        }
-      } catch (error) {
-        console.error("Erreur lors de l'effacement des données:", error);
-        toast({
-          title: "Erreur",
-          description: "Une erreur est survenue lors de l'effacement des données",
           variant: "destructive",
         });
       }
@@ -215,15 +165,6 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
                 onClick={handleDelete}
               >
                 <Trash className="h-4 w-4" />
-              </Button>
-              <Button 
-                variant="outline" 
-                size="icon" 
-                className="h-8 w-8 bg-orange-500 hover:bg-orange-600 text-white"
-                onClick={handleClearSensitiveData}
-                title="Effacer les données sensibles"
-              >
-                <Eraser className="h-4 w-4" />
               </Button>
               <Button 
                 variant="outline" 
