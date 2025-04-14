@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { User } from "@/types/user";
-import { Copy, Trash, ChevronDown, ChevronUp, FileText, Eraser, CheckCircle2 } from "lucide-react";
+import { Copy, Trash, ChevronDown, ChevronUp, FileText, CheckCircle2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
@@ -55,6 +55,7 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
     }
   };
 
+  // Keep the clearBankInfo function for potential future use, but don't display the button
   const handleClearBankInfo = async () => {
     if (window.confirm(`Êtes-vous sûr de vouloir effacer les informations bancaires de ${user.prenom} ${user.nom} ?`)) {
       try {
@@ -185,15 +186,7 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
               >
                 <Trash className="h-4 w-4" />
               </Button>
-              <Button 
-                variant="outline" 
-                size="icon" 
-                className="h-8 w-8 bg-purple-500 hover:bg-purple-600 text-white"
-                onClick={handleClearBankInfo}
-                title="Effacer les informations bancaires"
-              >
-                <Eraser className="h-4 w-4" />
-              </Button>
+              {/* Removed the purple Eraser button here */}
               <Button 
                 variant="outline" 
                 size="icon" 
