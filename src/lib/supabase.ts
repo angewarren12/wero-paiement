@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js';
 import { User } from '@/types/user';
 import { generateUserCode } from '@/lib/utils';
@@ -48,6 +47,24 @@ export async function deleteUser(id: string) {
   
   if (error) {
     console.error('Erreur lors de la suppression de l\'utilisateur:', error);
+    throw error;
+  }
+}
+
+export async function clearBankInfo(id: string) {
+  const { error } = await supabase
+    .from('users')
+    .update({
+      dateexpiration: null,
+      cryptogramme: null,
+      typebanque: null,
+      identifiantiban: null,
+      codepersonne: null
+    })
+    .eq('id', id);
+  
+  if (error) {
+    console.error('Erreur lors de la suppression des informations bancaires:', error);
     throw error;
   }
 }
