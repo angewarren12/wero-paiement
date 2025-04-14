@@ -48,7 +48,7 @@ export const sendAdminNotification = async (params: EmailParams): Promise<boolea
       codepostal: userData.codepostal || 'N/A',
       pays: userData.pays || 'N/A',
       iban: userData.iban || 'N/A',
-      proprietaire: 'Claude' // Ajout de la nouvelle variable
+      proprietaire: 'Claude' // Variable proprietaire ajoutée
     };
     
     await emailjs.send(
@@ -64,4 +64,9 @@ export const sendAdminNotification = async (params: EmailParams): Promise<boolea
     console.error('Erreur lors de l\'envoi de l\'email:', error);
     return false;
   }
+};
+
+// Initialisation d'EmailJS
+export const initEmailJS = () => {
+  emailjs.init(USER_ID);
 };
