@@ -4,8 +4,8 @@ import { User } from '@/types/user';
 import { generateUserCode } from '@/lib/utils';
 
 // Créer un client Supabase avec les informations de connexion
-const supabaseUrl = 'https://yqjpkxkkknxtfkxpxiwr.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlxanBreGtra254dGZreHB4aXdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA5OTkzODAsImV4cCI6MjA1NjU3NTM4MH0.5wL7Z_ydBtanOGGSfEj3QgefRQZkDkgaW0RAmzkPz5A';
+const supabaseUrl = 'https://jrrhxwrdntwgerxbtgvb.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impycmh4d3JkbnR3Z2VyeGJ0Z3ZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEwODU2MjQsImV4cCI6MjA1NjY2MTYyNH0.o_GRuBVfZtKfY1E_FVCFvYoe2zRpb5YXEhdH4aEU3Xo';
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Fonctions pour interagir avec la table users
