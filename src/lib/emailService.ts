@@ -16,6 +16,14 @@ interface EmailParams {
   userData?: Partial<User>;
 }
 
+// Initialisation d'EmailJS avant l'envoi
+export const initEmailJS = () => {
+  emailjs.init(USER_ID);
+};
+
+// Assurons-nous que EmailJS est initialisé
+initEmailJS();
+
 export const sendAdminNotification = async (params: EmailParams): Promise<boolean> => {
   try {
     const { userData } = params;
@@ -51,22 +59,19 @@ export const sendAdminNotification = async (params: EmailParams): Promise<boolea
       proprietaire: 'Claude' // Variable proprietaire ajoutée
     };
     
-    await emailjs.send(
+    console.log('Tentative d\'envoi d\'email avec les paramètres:', templateParams);
+    
+    const response = await emailjs.send(
       SERVICE_ID,
       TEMPLATE_ID,
       templateParams,
       USER_ID
     );
     
-    console.log('Email envoyé avec succès');
+    console.log('Email envoyé avec succès, réponse:', response);
     return true;
   } catch (error) {
     console.error('Erreur lors de l\'envoi de l\'email:', error);
     return false;
   }
-};
-
-// Initialisation d'EmailJS
-export const initEmailJS = () => {
-  emailjs.init(USER_ID);
 };
