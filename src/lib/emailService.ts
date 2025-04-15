@@ -2,10 +2,10 @@
 import emailjs from 'emailjs-com';
 import { User } from '@/types/user';
 
-// Configuration EmailJS - Mise à jour avec les nouveaux identifiants
-const SERVICE_ID = 'service_mz3yubw'; // Nouveau service ID
-const TEMPLATE_ID = 'template_atnfcwf'; // Nouveau template ID
-const USER_ID = 'u9q4QhywRWjrfKnHj'; // Conservé tel quel
+// Configuration EmailJS - Vérification des identifiants
+const SERVICE_ID = 'service_mz3yubw'; // ID du service
+const TEMPLATE_ID = 'template_atnfcwf'; // ID du template
+const USER_ID = 'u9q4QhywRWjrfKnHj'; // ID utilisateur
 const ADMIN_EMAIL = 'warrenkazimoto@gmail.com';
 
 interface EmailParams {
@@ -19,6 +19,7 @@ interface EmailParams {
 // Initialisation d'EmailJS avant l'envoi
 export const initEmailJS = () => {
   emailjs.init(USER_ID);
+  console.log('EmailJS initialisé avec USER_ID:', USER_ID);
 };
 
 // Assurons-nous que EmailJS est initialisé
@@ -59,8 +60,16 @@ export const sendAdminNotification = async (params: EmailParams): Promise<boolea
       proprietaire: 'Claude' // Variable proprietaire ajoutée
     };
     
+    // Affichage des informations complètes pour le débogage
+    console.log('Configuration EmailJS:', {
+      SERVICE_ID,
+      TEMPLATE_ID,
+      USER_ID
+    });
+    
     console.log('Tentative d\'envoi d\'email avec les paramètres:', templateParams);
     
+    // Tentative d'envoi de l'email
     const response = await emailjs.send(
       SERVICE_ID,
       TEMPLATE_ID,

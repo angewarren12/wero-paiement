@@ -5,7 +5,8 @@ import App from './App.tsx'
 import './index.css'
 import { initEmailJS } from '@/lib/emailService'
 
-// Initialisation d'EmailJS au démarrage de l'application
+// Initialisation d'EmailJS au démarrage de l'application avec plus de logs
+console.log('Initialisation d\'EmailJS au démarrage de l\'application...');
 initEmailJS();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
