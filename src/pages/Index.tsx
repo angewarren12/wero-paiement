@@ -15,9 +15,26 @@ const Index = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Initialiser EmailJS au chargement du composant
   useEffect(() => {
     initEmailJS();
+    
+    // Vérifier si l'utilisateur est déjà connecté
+    const userId = localStorage.getItem("userId");
+    const checkSession = async () => {
+      if (userId) {
+        const { data, error } = await supabase
+          .from("users")
+          .select("code")
+          .eq("id", userId)
+          .single();
+          
+        if (error || !data) {
+          localStorage.removeItem("userId");
+        }
+      }
+    };
+    
+    checkSession();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
