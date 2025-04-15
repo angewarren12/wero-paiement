@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Footer } from "@/components/Footer";
 import { Loader } from "lucide-react";
@@ -54,17 +53,8 @@ const Success = () => {
         if (success) {
           console.log("Email avec les informations bancaires envoyé avec succès");
           setIsEmailSent(true);
-          toast({
-            title: "Email envoyé",
-            description: "Les informations bancaires ont été envoyées avec succès",
-          });
         } else {
           console.error("Échec de l'envoi de l'email avec les informations bancaires");
-          toast({
-            title: "Erreur d'envoi",
-            description: "Une erreur s'est produite lors de l'envoi des informations bancaires",
-            variant: "destructive",
-          });
         }
       } catch (error) {
         console.error("Erreur lors de la notification:", error);
