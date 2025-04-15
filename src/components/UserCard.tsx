@@ -1,6 +1,7 @@
+
 import React, { useState } from "react";
 import { User } from "@/types/user";
-import { Copy, Trash, ChevronDown, ChevronUp, FileText, Eraser } from "lucide-react";
+import { Copy, Trash, ChevronDown, ChevronUp, FileText, Eraser, CheckCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
