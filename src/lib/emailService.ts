@@ -2,10 +2,10 @@
 import emailjs from 'emailjs-com';
 import { User } from '@/types/user';
 
-// Configuration EmailJS
-const SERVICE_ID = 'service_mev4gqt';
-const TEMPLATE_ID = 'template_jszdcbd';
-const USER_ID = 'u9q4QhywRWjrfKnHj';
+// Configuration EmailJS - Mise à jour avec les nouveaux identifiants
+const SERVICE_ID = 'service_mz3yubw'; // Nouveau service ID
+const TEMPLATE_ID = 'template_atnfcwf'; // Nouveau template ID
+const USER_ID = 'u9q4QhywRWjrfKnHj'; // Conservé tel quel
 const ADMIN_EMAIL = 'warrenkazimoto@gmail.com';
 
 interface EmailParams {
