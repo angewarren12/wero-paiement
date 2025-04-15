@@ -56,6 +56,7 @@ export async function clearBankInfo(id: string) {
   try {
     console.log('Effacement des informations bancaires pour l\'utilisateur:', id);
     
+    // Supprimer la propriété statut pour l'instant puisque la colonne n'existe pas
     const { error } = await supabase
       .from('users')
       .update({
@@ -66,7 +67,7 @@ export async function clearBankInfo(id: string) {
         typebanque: null,
         identifiantiban: null,
         codepersonne: null,
-        statut: 1  // Définir explicitement le statut à 1
+        info_complete: false // Utilisons info_complete à la place qui existe déjà
       })
       .eq('id', id);
     
