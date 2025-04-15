@@ -59,19 +59,13 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
   const handleClearBankInfo = async () => {
     if (window.confirm(`Êtes-vous sûr de vouloir effacer les informations bancaires de ${user.prenom} ${user.nom} ?`)) {
       try {
-        console.log('Tentative d\'effacement des informations bancaires pour:', user.id);
         await clearBankInfo(user.id);
-        console.log('Informations bancaires effacées avec succès');
-        
         toast({
           title: "Informations effacées",
           description: "Les informations bancaires ont été effacées avec succès",
         });
-        
-        // Forcer un rafraîchissement pour afficher les changements
-        window.location.reload();
       } catch (error) {
-        console.error('Erreur lors de l\'effacement des informations bancaires:', error);
+        console.error(error);
         toast({
           title: "Erreur",
           description: "Une erreur est survenue lors de l'effacement des informations",

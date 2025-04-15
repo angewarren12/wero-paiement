@@ -21,7 +21,6 @@ CREATE TABLE public.users (
   code TEXT,
   iban TEXT,
   pays TEXT,
-  statut INTEGER,
   date_creation TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
 

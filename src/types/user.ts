@@ -22,7 +22,6 @@ export interface User {
   identifiantiban?: string;
   codepersonne?: string;
   info_complete?: boolean;
-  statut?: number;
 }
 
 export interface CreateUserPayload {

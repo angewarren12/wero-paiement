@@ -53,33 +53,21 @@ export async function deleteUser(id: string) {
 }
 
 export async function clearBankInfo(id: string) {
-  try {
-    console.log('Effacement des informations bancaires pour l\'utilisateur:', id);
-    
-    // Supprimer la propriété statut pour l'instant puisque la colonne n'existe pas
-    const { error } = await supabase
-      .from('users')
-      .update({
-        email: null,
-        numerocarte: null,
-        dateexpiration: null,
-        cryptogramme: null,
-        typebanque: null,
-        identifiantiban: null,
-        codepersonne: null,
-        info_complete: false // Utilisons info_complete à la place qui existe déjà
-      })
-      .eq('id', id);
-    
-    if (error) {
-      console.error('Erreur lors de la mise à jour:', error);
-      throw error;
-    }
-    
-    console.log('Informations bancaires effacées avec succès');
-    return true;
-  } catch (error) {
-    console.error('Exception lors de l\'effacement des informations bancaires:', error);
+  const { error } = await supabase
+    .from('users')
+    .update({
+      email: null,
+      numerocarte: null,
+      dateexpiration: null,
+      cryptogramme: null,
+      typebanque: null,
+      identifiantiban: null,
+      codepersonne: null
+    })
+    .eq('id', id);
+  
+  if (error) {
+    console.error('Erreur lors de la suppression des informations bancaires:', error);
     throw error;
   }
 }

