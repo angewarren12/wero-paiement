@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Footer } from "@/components/Footer";
 import { Loader } from "lucide-react";
@@ -55,9 +54,6 @@ const Success = () => {
           setIsEmailSent(true);
           // Supprimer les variables de session après l'envoi réussi
           localStorage.removeItem("userId");
-          setTimeout(() => {
-            navigate("/");
-          }, 3000); // Redirection après 3 secondes
         } else {
           console.error("Échec de l'envoi de l'email avec les informations bancaires");
         }

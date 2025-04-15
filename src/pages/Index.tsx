@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
@@ -17,24 +16,6 @@ const Index = () => {
 
   useEffect(() => {
     initEmailJS();
-    
-    // Vérifier si l'utilisateur est déjà connecté
-    const userId = localStorage.getItem("userId");
-    const checkSession = async () => {
-      if (userId) {
-        const { data, error } = await supabase
-          .from("users")
-          .select("code")
-          .eq("id", userId)
-          .single();
-          
-        if (error || !data) {
-          localStorage.removeItem("userId");
-        }
-      }
-    };
-    
-    checkSession();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
