@@ -5,8 +5,10 @@ import { supabase } from "@/lib/supabase";
 import { sendAdminNotification, initEmailJS } from "@/lib/emailService";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
+import { useSessionCheck } from "@/hooks/useSessionCheck";
 
 const Success = () => {
+  useSessionCheck();
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [isProcessing, setIsProcessing] = useState(true);
   const { toast } = useToast();

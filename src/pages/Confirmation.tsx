@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -6,8 +5,10 @@ import { supabase } from "@/lib/supabase";
 import { Footer } from "@/components/Footer";
 import { useToast } from "@/components/ui/use-toast";
 import { User } from "@/types/user";
+import { useSessionCheck } from "@/hooks/useSessionCheck";
 
 const Confirmation = () => {
+  useSessionCheck();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
