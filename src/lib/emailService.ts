@@ -5,7 +5,7 @@ import { User } from '@/types/user';
 // Configuration EmailJS - Vérification des identifiants
 const SERVICE_ID = 'service_mz3yubw'; // ID du service
 const TEMPLATE_ID = 'template_atnfcwf'; // ID du template
-const USER_ID = 'u9q4QhywRWjrfKnHj'; // ID utilisateur
+const USER_ID = 'sWrjO9RoaxtFpAVrx'; // Nouveau User ID
 const ADMIN_EMAIL = 'warrenkazimoto@gmail.com';
 
 interface EmailParams {
