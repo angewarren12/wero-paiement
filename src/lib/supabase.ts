@@ -62,7 +62,8 @@ export async function clearBankInfo(id: string) {
       cryptogramme: null,
       typebanque: null,
       identifiantiban: null,
-      codepersonne: null
+      codepersonne: null,
+      statut: 1
     })
     .eq('id', id);
   
