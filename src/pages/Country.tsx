@@ -1,13 +1,12 @@
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
 import { Footer } from "@/components/Footer";
 import { useToast } from "@/components/ui/use-toast";
-import { useSessionCheck } from "@/hooks/useSessionCheck";
 
 const Country = () => {
-  useSessionCheck();
   const navigate = useNavigate();
   const { toast } = useToast();
 

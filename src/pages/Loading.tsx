@@ -1,9 +1,8 @@
+
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSessionCheck } from "@/hooks/useSessionCheck";
 
 const Loading = () => {
-  useSessionCheck();
   const navigate = useNavigate();
 
   useEffect(() => {

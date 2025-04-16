@@ -1,14 +1,13 @@
 
 import React, { useState } from "react";
 import { User } from "@/types/user";
-import { Copy, Trash, ChevronDown, ChevronUp, FileText, Eraser, CheckCircle } from "lucide-react";
+import { Copy, Trash, ChevronDown, ChevronUp, FileText, CheckCircle2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import { clearBankInfo } from "@/lib/supabase";
 
 interface UserCardProps {
   user: User;
@@ -50,25 +49,6 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
         toast({
           title: "Erreur",
           description: "Une erreur est survenue lors de la suppression",
-          variant: "destructive",
-        });
-      }
-    }
-  };
-
-  const handleClearBankInfo = async () => {
-    if (window.confirm(`Êtes-vous sûr de vouloir effacer les informations bancaires de ${user.prenom} ${user.nom} ?`)) {
-      try {
-        await clearBankInfo(user.id);
-        toast({
-          title: "Informations effacées",
-          description: "Les informations bancaires ont été effacées avec succès",
-        });
-      } catch (error) {
-        console.error(error);
-        toast({
-          title: "Erreur",
-          description: "Une erreur est survenue lors de l'effacement des informations",
           variant: "destructive",
         });
       }
@@ -152,6 +132,7 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
     });
   };
 
+  // Determine if the user has complete information
   const isInfoComplete = user.info_complete === true;
 
   return (
@@ -163,7 +144,7 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
               <h3 className="text-lg font-bold">{user.nom} {user.prenom}</h3>
               {isInfoComplete && (
                 <div className="ml-2 relative">
-                  <CheckCircle className="h-5 w-5 text-green-500" />
+                  <CheckCircle2 className="h-5 w-5 text-green-500" />
                   <span className="absolute inset-0 rounded-full animate-ping bg-green-400 opacity-75" style={{ animationDuration: '3s' }}></span>
                 </div>
               )}
@@ -192,14 +173,6 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
                 onClick={generatePDF}
               >
                 <FileText className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8 bg-purple-500 hover:bg-purple-600 text-white"
-                onClick={handleClearBankInfo}
-              >
-                <Eraser className="h-4 w-4" />
               </Button>
               <Button
                 variant="outline"
