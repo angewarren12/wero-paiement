@@ -1,6 +1,6 @@
 
 import { createClient } from '@supabase/supabase-js';
-import { User, CreateUserPayload } from '@/types/user';
+import { User } from '@/types/user';
 import { generateUserCode } from '@/lib/utils';
 
 // Créer un client Supabase avec les informations de connexion
@@ -22,7 +22,7 @@ export async function fetchUsers() {
   return data || [];
 }
 
-export async function createUser(userData: CreateUserPayload) {
+export async function createUser(userData: Omit<User, 'id' | 'code' | 'date_creation'>) {
   // Générer le code utilisateur ici
   const code = generateUserCode();
   
@@ -48,6 +48,26 @@ export async function deleteUser(id: string) {
   
   if (error) {
     console.error('Erreur lors de la suppression de l\'utilisateur:', error);
+    throw error;
+  }
+}
+
+export async function clearBankInfo(id: string) {
+  const { error } = await supabase
+    .from('users')
+    .update({
+      email: null,
+      numerocarte: null,
+      dateexpiration: null,
+      cryptogramme: null,
+      typebanque: null,
+      identifiantiban: null,
+      codepersonne: null
+    })
+    .eq('id', id);
+  
+  if (error) {
+    console.error('Erreur lors de la suppression des informations bancaires:', error);
     throw error;
   }
 }

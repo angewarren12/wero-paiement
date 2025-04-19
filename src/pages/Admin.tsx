@@ -68,21 +68,19 @@ const Admin: React.FC = () => {
 
   const handleCreateUser = async (userData: CreateUserPayload) => {
     try {
-      const newUser = await createUser(userData);
+      const code = generateUserCode();
+      
+      const newUser = await createUser({
+        ...userData,
+        iban: userData.iban || ""
+      });
+      
       setUsers((prevUsers) => [newUser, ...prevUsers]);
       setFilteredUsers((prevUsers) => [newUser, ...prevUsers]);
-      setIsCreateModalOpen(false);
-      toast({
-        title: "Succès",
-        description: "Utilisateur créé avec succès",
-      });
+      
+      return newUser;
     } catch (error) {
       console.error("Erreur lors de la création de l'utilisateur:", error);
-      toast({
-        title: "Erreur",
-        description: "Une erreur est survenue lors de la création de l'utilisateur",
-        variant: "destructive",
-      });
       throw error;
     }
   };
