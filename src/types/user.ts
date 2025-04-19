@@ -28,7 +28,7 @@ export interface CreateUserPayload {
   nom: string;
   prenom: string;
   montant: number;
-  iban?: string;
+  iban: string; // Changed from optional to required to match the User type
   email?: string;
   telephone?: string;
   datenaissance?: string;

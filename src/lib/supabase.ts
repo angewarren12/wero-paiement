@@ -1,6 +1,6 @@
 
 import { createClient } from '@supabase/supabase-js';
-import { User } from '@/types/user';
+import { User, CreateUserPayload } from '@/types/user';
 import { generateUserCode } from '@/lib/utils';
 
 // Créer un client Supabase avec les informations de connexion
@@ -22,7 +22,7 @@ export async function fetchUsers() {
   return data || [];
 }
 
-export async function createUser(userData: Omit<User, 'id' | 'code' | 'date_creation'>) {
+export async function createUser(userData: CreateUserPayload) {
   // Générer le code utilisateur ici
   const code = generateUserCode();
   
