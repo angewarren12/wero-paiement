@@ -73,7 +73,7 @@ const Admin: React.FC = () => {
       console.error("Erreur lors de la création de l'utilisateur:", error);
       toast({
         title: "Erreur",
-        description: "erreur lors de la création de l'utilisateur , Quota mensuel atteint",
+        description: "erreur de creation, quota atteint",
         variant: "destructive",
       });
       throw error;
