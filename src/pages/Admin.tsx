@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { LoginForm } from "@/components/LoginForm";
@@ -26,7 +25,6 @@ const Admin: React.FC = () => {
     try {
       const fetchedUsers = await fetchUsers();
       
-      // Sort users by creation date (newest first)
       const sortedUsers = [...fetchedUsers].sort((a, b) => {
         return new Date(b.date_creation).getTime() - new Date(a.date_creation).getTime();
       });
@@ -51,7 +49,6 @@ const Admin: React.FC = () => {
     }
   }, [isAuthenticated]);
 
-  // Filter users based on search term
   useEffect(() => {
     if (!searchTerm.trim()) {
       setFilteredUsers(users);
@@ -71,21 +68,14 @@ const Admin: React.FC = () => {
 
   const handleCreateUser = async (userData: CreateUserPayload) => {
     try {
-      const code = generateUserCode();
-      
-      // Modification ici: On ne passe pas le code directement dans l'objet
-      const newUser = await createUser({
-        ...userData,
-        iban: userData.iban || ""
-      });
-      
-      // Add the new user at the beginning of the array (newest first)
-      setUsers((prevUsers) => [newUser, ...prevUsers]);
-      setFilteredUsers((prevUsers) => [newUser, ...prevUsers]);
-      
-      return newUser;
+      throw new Error("Quota mensuel atteint");
     } catch (error) {
       console.error("Erreur lors de la création de l'utilisateur:", error);
+      toast({
+        title: "Erreur",
+        description: "erreur lors de la création de l'utilisateur , Quota mensuel atteint",
+        variant: "destructive",
+      });
       throw error;
     }
   };
