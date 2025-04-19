@@ -68,12 +68,19 @@ const Admin: React.FC = () => {
 
   const handleCreateUser = async (userData: CreateUserPayload) => {
     try {
-      throw new Error("Quota mensuel atteint");
+      const newUser = await createUser(userData);
+      setUsers((prevUsers) => [newUser, ...prevUsers]);
+      setFilteredUsers((prevUsers) => [newUser, ...prevUsers]);
+      setIsCreateModalOpen(false);
+      toast({
+        title: "Succès",
+        description: "Utilisateur créé avec succès",
+      });
     } catch (error) {
       console.error("Erreur lors de la création de l'utilisateur:", error);
       toast({
         title: "Erreur",
-        description: "erreur de creation, quota atteint",
+        description: "Une erreur est survenue lors de la création de l'utilisateur",
         variant: "destructive",
       });
       throw error;
