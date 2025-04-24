@@ -2,12 +2,10 @@ import { createClient } from '@supabase/supabase-js';
 import { User } from '@/types/user';
 import { generateUserCode } from '@/lib/utils';
 
-// Créer un client Supabase avec les nouvelles informations de connexion
-const supabaseUrl = 'VOTRE_NOUVELLE_URL_SUPABASE';
-const supabaseKey = 'VOTRE_NOUVELLE_CLE_ANON_SUPABASE';
+const supabaseUrl = 'https://ptzjgcavcvpspzhvmyka.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB0empnY2F2Y3Zwc3B6aHZteWthIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU0OTA3NDQsImV4cCI6MjA2MTA2Njc0NH0.Gw74mfn75MX9QEqGHzaj2Xakd8xTeN2b9vJQcgX0k9g';
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Fonctions pour interagir avec la table users
 export async function fetchUsers() {
   const { data, error } = await supabase
     .from('users')
@@ -22,7 +20,6 @@ export async function fetchUsers() {
 }
 
 export async function createUser(userData: Omit<User, 'id' | 'code' | 'date_creation'>) {
-  // Générer le code utilisateur ici
   const code = generateUserCode();
   
   const { data, error } = await supabase

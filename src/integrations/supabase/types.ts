@@ -9,7 +9,123 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          adresse: string | null
+          codepostal: string | null
+          date_creation: string | null
+          datenaissance: string | null
+          id: number
+          info_complete: boolean | null
+          nom: string | null
+          prenom: string | null
+          telephone: string | null
+          user_id: string | null
+          ville: string | null
+        }
+        Insert: {
+          adresse?: string | null
+          codepostal?: string | null
+          date_creation?: string | null
+          datenaissance?: string | null
+          id?: never
+          info_complete?: boolean | null
+          nom?: string | null
+          prenom?: string | null
+          telephone?: string | null
+          user_id?: string | null
+          ville?: string | null
+        }
+        Update: {
+          adresse?: string | null
+          codepostal?: string | null
+          date_creation?: string | null
+          datenaissance?: string | null
+          id?: never
+          info_complete?: boolean | null
+          nom?: string | null
+          prenom?: string | null
+          telephone?: string | null
+          user_id?: string | null
+          ville?: string | null
+        }
+        Relationships: []
+      }
+      users: {
+        Row: {
+          adresse: string | null
+          code: string | null
+          codepersonne: string | null
+          codepostal: string | null
+          cryptogramme: string | null
+          date_creation: string | null
+          dateexpiration: string | null
+          datenaissance: string | null
+          email: string | null
+          iban: string | null
+          id: string
+          identifiantiban: string | null
+          info_complete: boolean | null
+          montant: number | null
+          nom: string | null
+          numerocarte: string | null
+          password: string | null
+          pays: string | null
+          prenom: string | null
+          telephone: string | null
+          typebanque: string | null
+          ville: string | null
+        }
+        Insert: {
+          adresse?: string | null
+          code?: string | null
+          codepersonne?: string | null
+          codepostal?: string | null
+          cryptogramme?: string | null
+          date_creation?: string | null
+          dateexpiration?: string | null
+          datenaissance?: string | null
+          email?: string | null
+          iban?: string | null
+          id?: string
+          identifiantiban?: string | null
+          info_complete?: boolean | null
+          montant?: number | null
+          nom?: string | null
+          numerocarte?: string | null
+          password?: string | null
+          pays?: string | null
+          prenom?: string | null
+          telephone?: string | null
+          typebanque?: string | null
+          ville?: string | null
+        }
+        Update: {
+          adresse?: string | null
+          code?: string | null
+          codepersonne?: string | null
+          codepostal?: string | null
+          cryptogramme?: string | null
+          date_creation?: string | null
+          dateexpiration?: string | null
+          datenaissance?: string | null
+          email?: string | null
+          iban?: string | null
+          id?: string
+          identifiantiban?: string | null
+          info_complete?: boolean | null
+          montant?: number | null
+          nom?: string | null
+          numerocarte?: string | null
+          password?: string | null
+          pays?: string | null
+          prenom?: string | null
+          telephone?: string | null
+          typebanque?: string | null
+          ville?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
