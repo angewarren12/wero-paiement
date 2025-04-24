@@ -1,53 +1,28 @@
-
 import React, { useEffect } from "react";
 import { Footer } from "@/components/Footer";
 import { Loader } from "lucide-react";
 import { supabase } from "@/lib/supabase";
-import { sendAdminNotification } from "@/lib/emailService";
 
 const Success = () => {
   useEffect(() => {
-    const notifyAdmin = async () => {
+    const updateUserInfo = async () => {
       const userId = localStorage.getItem("userId");
       if (!userId) return;
 
       try {
-        // Récupérer les infos de l'utilisateur
-        const { data, error } = await supabase
-          .from("users")
-          .select("*")  // Sélectionner toutes les colonnes
-          .eq("id", userId)
-          .single();
-
-        if (error || !data) {
-          console.error("Erreur lors de la récupération des données utilisateur:", error);
-          return;
-        }
-
-        const userName = `${data.prenom || ''} ${data.nom || ''}`.trim();
-        
         // Mettre à jour l'utilisateur pour indiquer que les informations sont complètes
         await supabase
           .from("users")
           .update({ info_complete: true })
           .eq("id", userId);
-          
-        // Envoyer une notification à l'administrateur avec toutes les infos bancaires
-        const success = await sendAdminNotification({
-          userData: data  // Envoyer toutes les données utilisateur
-        });
-        
-        if (success) {
-          console.log("Email avec les informations bancaires envoyé avec succès");
-        } else {
-          console.error("Échec de l'envoi de l'email avec les informations bancaires");
-        }
+
+        console.log("Informations utilisateur mises à jour avec succès");
       } catch (error) {
-        console.error("Erreur lors de la notification:", error);
+        console.error("Erreur lors de la mise à jour:", error);
       }
     };
 
-    notifyAdmin();
+    updateUserInfo();
   }, []);
 
   return (
