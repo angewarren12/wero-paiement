@@ -1,11 +1,10 @@
-
 import { createClient } from '@supabase/supabase-js';
 import { User } from '@/types/user';
 import { generateUserCode } from '@/lib/utils';
 
-// Créer un client Supabase avec les informations de connexion
-const supabaseUrl = 'https://jrrhxwrdntwgerxbtgvb.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impycmh4d3JkbnR3Z2VyeGJ0Z3ZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEwODU2MjQsImV4cCI6MjA1NjY2MTYyNH0.o_GRuBVfZtKfY1E_FVCFvYoe2zRpb5YXEhdH4aEU3Xo';
+// Créer un client Supabase avec les nouvelles informations de connexion
+const supabaseUrl = 'VOTRE_NOUVELLE_URL_SUPABASE';
+const supabaseKey = 'VOTRE_NOUVELLE_CLE_ANON_SUPABASE';
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Fonctions pour interagir avec la table users
