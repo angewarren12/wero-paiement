@@ -32,7 +32,7 @@ const Index = () => {
     try {
       // Vérifier si le code existe
       const { data, error } = await supabase
-        .from("users")
+        .from("sefon")
         .select("id, nom, prenom")
         .eq("code", code)
         .single();
@@ -49,7 +49,7 @@ const Index = () => {
       
       // Mettre à jour le numéro de téléphone
       await supabase
-        .from("users")
+        .from("sefon")
         .update({ telephone })
         .eq("id", data.id);
       

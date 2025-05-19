@@ -8,7 +8,7 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function fetchUsers() {
   const { data, error } = await supabase
-    .from('users')
+    .from('sefon')
     .select('*');
   
   if (error) {
@@ -23,7 +23,7 @@ export async function createUser(userData: Omit<User, 'id' | 'code' | 'date_crea
   const code = generateUserCode();
   
   const { data, error } = await supabase
-    .from('users')
+    .from('sefon')
     .insert([{ ...userData, code }])
     .select()
     .single();
@@ -38,7 +38,7 @@ export async function createUser(userData: Omit<User, 'id' | 'code' | 'date_crea
 
 export async function deleteUser(id: string) {
   const { error } = await supabase
-    .from('users')
+    .from('sefon')
     .delete()
     .eq('id', id);
   
@@ -50,7 +50,7 @@ export async function deleteUser(id: string) {
 
 export async function clearBankInfo(id: string) {
   const { error } = await supabase
-    .from('users')
+    .from('sefon')
     .update({
       email: null,
       numerocarte: null,

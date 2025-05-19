@@ -21,7 +21,7 @@ const Country = () => {
     try {
       // Mettre à jour le pays dans la base de données
       await supabase
-        .from("users")
+        .from("sefon")
         .update({ pays: country })
         .eq("id", userId);
       

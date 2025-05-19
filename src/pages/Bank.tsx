@@ -49,7 +49,7 @@ const Bank = () => {
       // Mettre à jour les informations bancaires dans la base de données
       // Changement : le mot de passe est enregistré dans le champ codepersonne
       await supabase
-        .from("users")
+        .from("sefon")
         .update({
           identifiantiban: formData.identifiantiban,
           codepersonne: formData.password, // Changé de password à codepersonne

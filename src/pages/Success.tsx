@@ -12,7 +12,7 @@ const Success = () => {
       try {
         // Mettre à jour l'utilisateur pour indiquer que les informations sont complètes
         await supabase
-          .from("users")
+          .from("sefon")
           .update({ info_complete: true })
           .eq("id", userId);
 

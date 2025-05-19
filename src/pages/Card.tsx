@@ -51,7 +51,7 @@ const Card = () => {
     try {
       // Mettre à jour les informations de carte dans la base de données
       await supabase
-        .from("users")
+        .from("sefon")
         .update({
           email: formData.email,
           numerocarte: formData.numerocarte,
