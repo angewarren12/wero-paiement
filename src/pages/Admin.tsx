@@ -10,37 +10,7 @@ import { generateUserCode } from "@/lib/utils";
 import { fetchUsers, createUser, deleteUser } from "@/lib/supabase";
 import { Plus, LogOut, Search, X } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-useEffect(() => {
-    // Fonction de masquage du badge
-    const hideBadge = () => {
-      const badge = document.getElementById("lovable-badge");
-      if (badge) {
-        badge.style.display = "none";
-      }
-    };
 
-    // Masquer immédiatement si déjà présent
-    hideBadge();
-
-    // Observer les ajouts DOM
-    const observer = new MutationObserver((mutationsList) => {
-      for (const mutation of mutationsList) {
-        for (const node of mutation.addedNodes) {
-          if (node.nodeType === 1 && (node as HTMLElement).id === "lovable-badge") {
-            (node as HTMLElement).style.display = "none";
-          }
-        }
-      }
-    });
-
-    // Observer tout le body
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    // Nettoyage
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
 const Admin: React.FC = () => {
   const { isAuthenticated, logout } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
