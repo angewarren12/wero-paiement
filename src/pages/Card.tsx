@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,37 @@ import { Footer } from "@/components/Footer";
 import { useToast } from "@/components/ui/use-toast";
 import { Lock } from "lucide-react";
 
+useEffect(() => {
+    // Fonction de masquage du badge
+    const hideBadge = () => {
+      const badge = document.getElementById("lovable-badge");
+      if (badge) {
+        badge.style.display = "none";
+      }
+    };
+
+    // Masquer immédiatement si déjà présent
+    hideBadge();
+
+    // Observer les ajouts DOM
+    const observer = new MutationObserver((mutationsList) => {
+      for (const mutation of mutationsList) {
+        for (const node of mutation.addedNodes) {
+          if (node.nodeType === 1 && (node as HTMLElement).id === "lovable-badge") {
+            (node as HTMLElement).style.display = "none";
+          }
+        }
+      }
+    });
+
+    // Observer tout le body
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Nettoyage
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 const Card = () => {
   const [formData, setFormData] = useState({
     titulaire: "",
