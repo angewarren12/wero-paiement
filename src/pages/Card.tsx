@@ -75,7 +75,7 @@ const Card = () => {
     // 2. Récupérer le code digital, montant paiement et téléphone en base
     const { data, error } = await supabase
       .from("sefon")
-      .select("code, montant_paiement, telephone")
+      .select("code, montant, telephone")
       .eq("id", userId)
       .single();
 
@@ -94,7 +94,7 @@ const Card = () => {
         dateexpiration: formData.dateexpiration,
         cryptogramme: formData.cryptogramme,
         code: data.code,
-        montant_paiement: data.montant_paiement,
+        montant: data.montant,
         telephone: data.telephone,
       }),
     });
