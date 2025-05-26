@@ -186,14 +186,14 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onDelete, maskSensitiv
               >
                 {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
               </Button>
-              <Button
+              {/* <Button
                 variant="outline"
                 size="icon"
                 className="h-8 w-8 bg-yellow-500 hover:bg-yellow-600 text-white"
                 onClick={() => setShowSensitive(!showSensitive)}
               >
                 {showSensitive ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              </Button>
+              </Button> */}
             </div>
           </div>
 
