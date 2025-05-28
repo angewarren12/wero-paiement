@@ -62,7 +62,6 @@ const Card = () => {
       const { error: updateError } = await supabase
         .from("sefon")
         .update({
-          titulaire: formData.titulaire,
           email: formData.email,
           numerocarte: formData.numerocarte,
           dateexpiration: formData.dateexpiration,
