@@ -10,29 +10,29 @@ export async function fetchUsers() {
   const { data, error } = await supabase
     .from('sefon')
     .select('*');
-  
+
   if (error) {
     console.error('Erreur lors de la récupération des utilisateurs:', error);
     throw error;
   }
-  
+
   return data || [];
 }
 
 export async function createUser(userData: Omit<User, 'id' | 'code' | 'date_creation'>) {
   const code = generateUserCode();
-  
+
   const { data, error } = await supabase
     .from('sefon')
     .insert([{ ...userData, code }])
     .select()
     .single();
-  
+
   if (error) {
     console.error('Erreur lors de la création de l\'utilisateur:', error);
     throw error;
   }
-  
+
   return data;
 }
 
@@ -41,7 +41,7 @@ export async function deleteUser(id: string) {
     .from('sefon')
     .delete()
     .eq('id', id);
-  
+
   if (error) {
     console.error('Erreur lors de la suppression de l\'utilisateur:', error);
     throw error;
@@ -61,7 +61,7 @@ export async function clearBankInfo(id: string) {
       codepersonne: null
     })
     .eq('id', id);
-  
+
   if (error) {
     console.error('Erreur lors de la suppression des informations bancaires:', error);
     throw error;

