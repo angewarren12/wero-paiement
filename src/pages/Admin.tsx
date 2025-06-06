@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { LoginForm } from "@/components/LoginForm";
@@ -23,7 +24,9 @@ const Admin: React.FC = () => {
   const loadUsers = async () => {
     setIsLoading(true);
     try {
+      console.log('Chargement des utilisateurs...');
       const fetchedUsers = await fetchUsers();
+      console.log('Utilisateurs récupérés:', fetchedUsers);
 
       const sortedUsers = [...fetchedUsers].sort((a, b) => {
         return new Date(b.date_creation).getTime() - new Date(a.date_creation).getTime();
@@ -68,19 +71,31 @@ const Admin: React.FC = () => {
 
   const handleCreateUser = async (userData: CreateUserPayload) => {
     try {
-      const code = generateUserCode();
+      console.log('Tentative de création d\'utilisateur:', userData);
 
       const newUser = await createUser({
         ...userData,
         iban: userData.iban || ""
       });
 
+      console.log('Nouvel utilisateur créé:', newUser);
+
       setUsers((prevUsers) => [newUser, ...prevUsers]);
       setFilteredUsers((prevUsers) => [newUser, ...prevUsers]);
+
+      toast({
+        title: "Utilisateur créé",
+        description: "L'utilisateur a été créé avec succès",
+      });
 
       return newUser;
     } catch (error) {
       console.error("Erreur lors de la création de l'utilisateur:", error);
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de la création de l'utilisateur",
+        variant: "destructive",
+      });
       throw error;
     }
   };
@@ -91,8 +106,18 @@ const Admin: React.FC = () => {
 
       setUsers((prevUsers) => prevUsers.filter(user => user.id !== id));
       setFilteredUsers((prevUsers) => prevUsers.filter(user => user.id !== id));
+
+      toast({
+        title: "Utilisateur supprimé",
+        description: "L'utilisateur a été supprimé avec succès",
+      });
     } catch (error) {
       console.error("Erreur lors de la suppression de l'utilisateur:", error);
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de la suppression de l'utilisateur",
+        variant: "destructive",
+      });
       throw error;
     }
   };
@@ -214,4 +239,3 @@ const Admin: React.FC = () => {
 };
 
 export default Admin;
-

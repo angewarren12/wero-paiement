@@ -1,10 +1,17 @@
+
 import { createClient } from '@supabase/supabase-js';
 import { User } from '@/types/user';
 import { generateUserCode } from '@/lib/utils';
 
 const supabaseUrl = 'https://ptzjgcavcvpspzhvmyka.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB0empnY2F2Y3Zwc3B6aHZteWthIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU0OTA3NDQsImV4cCI6MjA2MTA2Njc0NH0.Gw74mfn75MX9QEqGHzaj2Xakd8xTeN2b9vJQcgX0k9g';
-export const supabase = createClient(supabaseUrl, supabaseKey);
+
+export const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    persistSession: false,
+    autoRefreshToken: false,
+  }
+});
 
 export async function fetchUsers() {
   const { data, error } = await supabase
@@ -21,6 +28,8 @@ export async function fetchUsers() {
 
 export async function createUser(userData: Omit<User, 'id' | 'code' | 'date_creation'>) {
   const code = generateUserCode();
+  
+  console.log('Tentative de création d\'utilisateur avec les données:', { ...userData, code });
 
   const { data, error } = await supabase
     .from('claude')
@@ -33,6 +42,7 @@ export async function createUser(userData: Omit<User, 'id' | 'code' | 'date_crea
     throw error;
   }
 
+  console.log('Utilisateur créé avec succès:', data);
   return data;
 }
 

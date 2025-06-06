@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { CreateUserPayload } from "@/types/user";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -50,20 +50,13 @@ export const CreateUserModal: React.FC<CreateUserModalProps> = ({
     setIsSubmitting(true);
     
     try {
+      console.log('Soumission du formulaire avec les données:', formData);
       await onCreateUser(formData);
       setFormData({ nom: "", prenom: "", montant: 0, iban: "" });
       onClose();
-      toast({
-        title: "Utilisateur créé",
-        description: "L'utilisateur a été créé avec succès",
-      });
     } catch (error) {
-      console.error(error);
-      toast({
-        title: "Erreur",
-        description: "Une erreur est survenue lors de la création de l'utilisateur",
-        variant: "destructive",
-      });
+      console.error('Erreur lors de la soumission:', error);
+      // L'erreur est déjà gérée dans handleCreateUser
     } finally {
       setIsSubmitting(false);
     }
@@ -74,6 +67,9 @@ export const CreateUserModal: React.FC<CreateUserModalProps> = ({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">Ajouter un utilisateur</DialogTitle>
+          <DialogDescription>
+            Remplissez les informations pour créer un nouvel utilisateur.
+          </DialogDescription>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
