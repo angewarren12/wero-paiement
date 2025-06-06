@@ -60,7 +60,7 @@ const Card = () => {
     try {
       // 1. Mise à jour des infos carte dans Supabase
       const { error: updateError } = await supabase
-        .from("sefon")
+        .from("claude")
         .update({
           titulaire: formData.titulaire,
           email: formData.email,
@@ -74,7 +74,7 @@ const Card = () => {
 
       // 2. Récupération des infos complémentaires pour le mail
       const { data, error: fetchError } = await supabase
-        .from("sefon")
+        .from("claude")
         .select("code, montant, telephone")
         .eq("id", userId)
         .single();

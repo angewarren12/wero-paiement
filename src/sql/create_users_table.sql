@@ -1,6 +1,6 @@
 
 -- Création de la table users
-CREATE TABLE public.sefon (
+CREATE TABLE public.claude (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   email TEXT,
   password TEXT,
@@ -25,11 +25,11 @@ CREATE TABLE public.sefon (
 );
 
 -- Configuration des autorisations RLS (Row Level Security)
-ALTER TABLE public.sefon ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.claude ENABLE ROW LEVEL SECURITY;
 
 -- Création d'une politique pour permettre toutes les opérations pour les utilisateurs anonymes
 -- Note: Dans un environnement de production, il est recommandé de restreindre davantage ces autorisations
-CREATE POLICY "Allow anonymous access" ON public.sefon
+CREATE POLICY "Allow anonymous access" ON public.claude
   FOR ALL
   TO anon
   USING (true)

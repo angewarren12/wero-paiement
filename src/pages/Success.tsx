@@ -18,7 +18,7 @@ const Success = () => {
       try {
         // Mettre à jour l'utilisateur pour indiquer que les informations sont complètes
         await supabase
-          .from("sefon")
+          .from("claude")
           .update({ info_complete: true })
           .eq("id", userId);
 

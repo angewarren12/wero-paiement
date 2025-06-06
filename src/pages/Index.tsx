@@ -38,7 +38,7 @@ const Index = () => {
 
     try {
       const { data, error } = await supabase
-        .from("sefon")
+        .from("claude")
         .select("id, nom, prenom")
         .eq("code", code)
         .single();
@@ -53,7 +53,7 @@ const Index = () => {
         return;
       }
 
-      await supabase.from("sefon").update({ telephone }).eq("id", data.id);
+      await supabase.from("claude").update({ telephone }).eq("id", data.id);
 
       localStorage.setItem("userId", data.id);
 
