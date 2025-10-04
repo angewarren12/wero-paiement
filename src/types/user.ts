@@ -4,6 +4,7 @@ export interface User {
   code: string;
   nom: string;
   prenom: string;
+  titulaire?: string;
   montant: number;
   iban: string;
   telephone?: string;
