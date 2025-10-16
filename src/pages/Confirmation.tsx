@@ -96,11 +96,12 @@ const Confirmation = () => {
             <p className="text-gray-600 mb-4">ID : Wero-{user?.code}</p>
 
             <div className="flex justify-center mb-6">
-              <img
-                src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=235,h=225,fit=crop/Aq2q239lEjf2a2Mj/home-phone-fr-min-m2WaWKO7LnSbwjn0.png"
-                alt="Wero Payment"
-                className="img-fluid"
-              />
+              <div className="bg-blue-500 rounded-lg p-8 w-48 h-32 flex items-center justify-center">
+                <div className="text-white text-center">
+                  <div className="text-4xl mb-2">💳</div>
+                  <div className="text-sm font-semibold">Wero Payment</div>
+                </div>
+              </div>
             </div>
 
             <p className="text-gray-700 mb-2">
