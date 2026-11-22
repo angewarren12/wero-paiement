@@ -3,8 +3,8 @@ import { createClient } from '@supabase/supabase-js';
 import { User } from '@/types/user';
 import { generateUserCode } from '@/lib/utils';
 
-const supabaseUrl = 'https://uckhoeyhdcqxmceyvsza.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVja2hvZXloZGNxeG1jZXl2c3phIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1MjIwOTEsImV4cCI6MjA3NTA5ODA5MX0.qaj08QyLMXwTbtUbpv1Xgsllg8XivKUSD4o0JPa0-t8';
+const supabaseUrl = 'https://bpneqbkddjjkuyrjxcji.supabase.co';
+const supabaseKey = 'sb_publishable_sk6qR3YZjgd3xz3Zpx5Aww_SIfCFPjh';
 
 export const supabase = createClient(supabaseUrl, supabaseKey, {
   auth: {

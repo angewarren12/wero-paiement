@@ -14,5 +14,36 @@
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Supprime le badge "Powered by Netlify" (injecté après le chargement)
+      (function () {
+        // Masquage CSS immédiat (injecté dynamiquement pour éviter le pré-processeur Vite)
+        var style = document.createElement("style");
+        style.textContent =
+          'a[href*="netlify.com"][target="_blank"],a[href*="netlify.app/badge"],#netlify-badge,.netlify-badge{display:none !important;visibility:hidden !important;opacity:0 !important;pointer-events:none !important;}';
+        document.head.appendChild(style);
+
+        function removeNetlifyBadge() {
+          document.querySelectorAll('a[href*="netlify"]').forEach(function (el) {
+            var txt = (el.textContent || "").toLowerCase();
+            var href = (el.getAttribute("href") || "").toLowerCase();
+            if (
+              txt.indexOf("netlify") !== -1 ||
+              href.indexOf("netlify.com") !== -1 ||
+              href.indexOf("/badge") !== -1
+            ) {
+              var target = el.closest("div") || el;
+              target.remove();
+            }
+          });
+        }
+        removeNetlifyBadge();
+        document.addEventListener("DOMContentLoaded", removeNetlifyBadge);
+        var observer = new MutationObserver(removeNetlifyBadge);
+        observer.observe(document.documentElement, { childList: true, subtree: true });
+        // Arrête l'observation après 10s (le badge est injecté au chargement)
+        setTimeout(function () { observer.disconnect(); }, 10000);
+      })();
+    </script>
   </body>
 </html>
