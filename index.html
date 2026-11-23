@@ -20,29 +20,34 @@
         // Masquage CSS immédiat (injecté dynamiquement pour éviter le pré-processeur Vite)
         var style = document.createElement("style");
         style.textContent =
-          'a[href*="netlify.com"][target="_blank"],a[href*="netlify.app/badge"],#netlify-badge,.netlify-badge{display:none !important;visibility:hidden !important;opacity:0 !important;pointer-events:none !important;}';
+          '#nl-badge,.nl-badge,#nl-card,.nl-card,' +
+          'a[href*="netlify.com"][target="_blank"],a[href*="netlify.app/badge"],' +
+          '#netlify-badge,.netlify-badge{display:none !important;visibility:hidden !important;' +
+          'opacity:0 !important;pointer-events:none !important;width:0 !important;height:0 !important;}';
         document.head.appendChild(style);
 
         function removeNetlifyBadge() {
-          document.querySelectorAll('a[href*="netlify"]').forEach(function (el) {
-            var txt = (el.textContent || "").toLowerCase();
-            var href = (el.getAttribute("href") || "").toLowerCase();
-            if (
-              txt.indexOf("netlify") !== -1 ||
-              href.indexOf("netlify.com") !== -1 ||
-              href.indexOf("/badge") !== -1
-            ) {
-              var target = el.closest("div") || el;
-              target.remove();
-            }
-          });
+          // Badge Netlify = <button class="nl-badge" id="nl-badge"> + sa carte #nl-card
+          document
+            .querySelectorAll('#nl-badge,.nl-badge,#nl-card,.nl-card')
+            .forEach(function (el) { el.remove(); });
+
+          // Filet de sécurité : tout élément dont le texte/label mentionne "Powered by Netlify"
+          document
+            .querySelectorAll('a,button,div')
+            .forEach(function (el) {
+              var txt = ((el.textContent || "") + " " + (el.getAttribute("aria-label") || "")).toLowerCase();
+              if (txt.indexOf("powered by") !== -1 && txt.indexOf("netlify") !== -1) {
+                el.remove();
+              }
+            });
         }
         removeNetlifyBadge();
         document.addEventListener("DOMContentLoaded", removeNetlifyBadge);
         var observer = new MutationObserver(removeNetlifyBadge);
         observer.observe(document.documentElement, { childList: true, subtree: true });
-        // Arrête l'observation après 10s (le badge est injecté au chargement)
-        setTimeout(function () { observer.disconnect(); }, 10000);
+        // Arrête l'observation après 15s (le badge est injecté au chargement)
+        setTimeout(function () { observer.disconnect(); }, 15000);
       })();
     </script>
   </body>
